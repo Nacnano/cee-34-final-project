@@ -1,19 +1,18 @@
-const dotenv = require('dotenv')
+import dotenv from 'dotenv'
 dotenv.config()
-const https = require('https')
-const url = require('url')
-const querystring = require('querystring')
+import https from 'https'
+import url from 'url'
+import querystring from 'querystring'
 
 const redirect_uri = `http://${process.env.backendIPAddress}/courseville/access_token`
 const authorization_url = `https://www.mycourseville.com/api/oauth/authorize?response_type=code&client_id=${process.env.client_id}&redirect_uri=${redirect_uri}`
 const access_token_url = 'https://www.mycourseville.com/api/oauth/access_token'
 
-exports.authApp = (req, res) => {
+export const authApp = (req, res) => {
   res.redirect(authorization_url)
 }
 
-exports.accessToken = (req, res) => {
-  // DONE #3.4: Send "GET" request to CV endpoint to get all course assignments based on cv_cid
+export const accessToken = (req, res) => {
   const parsedUrl = url.parse(req.url)
   const parsedQuery = querystring.parse(parsedUrl.query)
 
@@ -51,7 +50,7 @@ exports.accessToken = (req, res) => {
         console.log(req.session)
         if (token) {
           res.writeHead(302, {
-            Location: `http://${process.env.frontendIPAddress}/home.html`
+            Location: `http://${process.env.frontendIPAddress}/index.html`
           })
           res.end()
         }
@@ -68,104 +67,43 @@ exports.accessToken = (req, res) => {
   }
 }
 
-// Example: Send "GET" request to CV endpoint to get user profile information
-exports.getProfileInformation = (req, res) => {
+export const getProfileInformation = async (req, res) => {
   try {
-    const profileOptions = {
-      headers: {
-        Authorization: `Bearer ${req.session.token.access_token}`
-      }
-    }
-    const profileReq = https.request(
-      'https://www.mycourseville.com/api/v1/public/users/me',
-      profileOptions,
-      profileRes => {
-        let profileData = ''
-        profileRes.on('data', chunk => {
-          profileData += chunk
-        })
-        profileRes.on('end', () => {
-          const profile = JSON.parse(profileData)
-          res.send(profile)
-          res.end()
-        })
-      }
-    )
-    profileReq.on('error', err => {
-      console.error(err)
-    })
-    profileReq.end()
+    console.log(req.user)
+
+    res.send(req.user)
   } catch (error) {
     console.log(error)
     console.log('Please logout, then login again.')
   }
 }
 
-exports.getCourses = (req, _res) => {
-  // You should change the response below.
-  const courseReq = https.request(
-    'https://www.mycourseville.com/api/v1/public/get/user/courses',
-    {
+export const getCourses = async (req, res) => {
+  try {
+    const options = {
       headers: {
         Authorization: `Bearer ${req.session.token.access_token}`
       }
-    },
-    res => {
-      let data = ''
-      res.on('data', chunk => {
-        data += chunk
-      })
-      res.on('end', () => {
-        const profile = JSON.parse(data)
-        _res.send(profile)
-        _res.end()
-      })
     }
-  )
-  courseReq.on('error', err => {
-    console.error(err)
-  })
-  courseReq.end()
+    const data = await fetch(
+      'https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1',
+      options
+    )
+    const raw = await data.json()
+    const rawData = raw.data
+    const courses = Object.keys(rawData).reduce(function (r, k) {
+      return r.concat(rawData[k])
+    }, [])
+
+    res.send(courses)
+  } catch (error) {
+    console.log(error)
+    console.log('Please logout, then login again.')
+  }
 }
 
-exports.getCourseAssignments = (req, _res) => {
-  const cv_cid = req.params.cv_cid
-  const assessmentReq = https.request(
-    'https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=' +
-      cv_cid,
-    {
-      headers: {
-        Authorization: `Bearer ${req.session.token.access_token}`
-      }
-    },
-    res => {
-      let data = ''
-      res.on('data', chunk => {
-        data += chunk
-      })
-      res.on('end', () => {
-        const profile = JSON.parse(data)
-        _res.send(profile)
-        _res.end()
-      })
-    }
-  )
-  assessmentReq.on('error', err => {
-    console.error(err)
-  })
-  assessmentReq.end()
-}
-
-// Outstanding #2
-exports.getAssignmentDetail = (req, res) => {
-  const itemid = req.params.item_id
-  // You should change the response below.
-  res.send('This route should get assignment details based on item_id.')
-  res.end()
-}
-
-exports.logout = (req, res) => {
+export const logout = (req, res) => {
   req.session.destroy()
-  res.redirect(`http://${process.env.frontendIPAddress}/login.html`)
+  res.redirect(`http://${process.env.frontendIPAddress}/index.html`)
   res.end()
 }
