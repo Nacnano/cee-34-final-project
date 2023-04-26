@@ -14,11 +14,14 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 10%;
+    padding: 16px 10%;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
 }
 
 .logo {
     cursor: pointer;
     display: flex;
     align-items: center;
+    width: 10%;
+    height: 100%;
 }
