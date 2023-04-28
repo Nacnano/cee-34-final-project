@@ -221,8 +221,8 @@ function updateEvents(date) {
   </div>`;
     }
     if (assignments === "") {
-      assignments = `<div class="no-event">
-            <h3>No Events</h3>
+      assignments = `<div class="no-assignment">
+            <h4>No Assignment</h4>
         </div>`;
     }
   });

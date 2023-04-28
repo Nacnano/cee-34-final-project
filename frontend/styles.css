@@ -291,3 +291,14 @@ body {
 .assignment .due-date {
   color: white;
 }
+
+.no-assignment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.no-assignment h4 {
+  color: rgb(208, 208, 208);
+}
