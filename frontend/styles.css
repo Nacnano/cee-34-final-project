@@ -92,20 +92,6 @@ body {
   justify-content: center;
   padding: 30px;
 }
-
-.task {
-  height: 90%;
-  width: 30%;
-  background-color: white;
-  border-radius: 25px;
-  overflow: hidden;
-  display: inline-block;
-  justify-content: center;
-  padding: 20px;
-  margin-left: 5%;
-}
-
-
 .calendar .header,
 .calendar .month-picker {
   display:flex;
@@ -254,5 +240,57 @@ body {
   background-color: var(--hover-clr);
 }
 
+.task {
+  height: 90%;
+  width: 25%;
+  background-color: white;
+  border-radius: 25px;
+  overflow: hidden;
+  display: inline-block;
+  justify-content: center;
+  padding: 20px;
+  margin-left: 5%;
+}
 
 
+.assignment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--primary-clr);
+  padding: 10px 15px;
+  border-radius: 20px;
+}
+
+.assignment .info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.assignment .imageHolder {
+  height: 100%;
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.assignment .course-icon {
+  width: 60%;
+  background-color: rgb(208, 208, 208);
+  border-radius: 50px;
+}
+
+.assignment h5 {
+  font-weight: lighter;
+}
+
+.assignment h4 {
+
+}
+
+.assignment .course-title,
+.assignment .assignment-title,
+.assignment .due-date {
+  color: white;
+}
