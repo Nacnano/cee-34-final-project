@@ -162,7 +162,7 @@ body {
 
 .calendar .days .day {
   width: 14.28%;
-  height: 90px;
+  height: 70px;
   display:flex;
   align-items: center;
   justify-content: center;
