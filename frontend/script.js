@@ -6,6 +6,7 @@ const nextBtn = document.querySelector(".next-month-btn");
 const todayBtn = document.querySelector(".today-btn");
 const gotoBtn = document.querySelector(".goto-btn");
 const dateInput = document.querySelector(".date-input");
+const tasks = document.querySelector(".task");
 
 let currDay = new Date();
 let activeDay;
@@ -49,6 +50,7 @@ function createCalendar() {
 
   for (let i = 1; i <= lastDate; i++) {
     let isEvent = false;
+    //TODO: Check if have assignment
     assignmentsList.forEach((assignment) => {
       if (
         assignment.day === i &&
@@ -58,6 +60,7 @@ function createCalendar() {
         isEvent = true;
       }
     });
+    //TODO END HERE
     if (
       i === new Date().getDate() &&
       year === new Date().getFullYear() &&
@@ -86,7 +89,6 @@ function createCalendar() {
   daysList.innerHTML = days;
   addDaysListener();
 }
-
 
 function prevMonthBtnHandler() {
   month--;
@@ -126,7 +128,7 @@ function addDaysListener() {
           const days = document.querySelectorAll(".day");
           days.forEach((day) => {
             if (day.classList.contains("active")) {
-              day.classList.remove("active")
+              day.classList.remove("active");
             }
             if (
               !day.classList.contains("prev-month") &&
@@ -142,7 +144,7 @@ function addDaysListener() {
           const days = document.querySelectorAll(".day");
           days.forEach((day) => {
             if (day.classList.contains("active")) {
-              day.classList.remove("active")
+              day.classList.remove("active");
             }
             if (
               !day.classList.contains("next-month") &&
@@ -196,7 +198,38 @@ function gotoDate() {
   }
   alert("Invalid Date");
 }
+//TODO: Make this function work
+function updateEvents(date) {
+  let assignments = "";
+  assignmentsList.forEach((assignment) => {
+    if (
+      date === assignment.day &&
+      month + 1 === assignment.month &&
+      year === assignment.year
+    ) {
+      assignment += `        <div class="assignment">
+    <div class = "info">
+      <div class="imageHolder">
+        <img class="course-icon" src="${assignment.courseImage}" alt="course-icon">
+      </div>
+      <div class="assignment-info">
+        <h5 class="course-title">${assignment.courseTitle}</h3>
+        <h4 class="assignment-title">${assignment.title}</h4>
+      </div>
+    </div>
+    <div class = "due-date">${assignment.dueDate}</div>
+  </div>`;
+    }
+    if (assignments === "") {
+      assignments = `<div class="no-event">
+            <h3>No Events</h3>
+        </div>`;
+    }
+  });
+  eventsContainer.innerHTML = assignments;
+}
 
 function getAssignments() {
-  //TODO push all the assignment to assignmentsList it should have an information of assigment year month day, picture of course, course title, assigment name, assigment due date(just hr:min)
+  //TODO push all the assignment to assignmentsList. Each assignment should have an information of assignment year month day, picture of course, course title, assignment name, assignment due date(just hr:min)
+  //It would be perfect if the assignment is a class or object in some sort with an attribute: day, month, year, courseImage, courseTitle, title, dueDate
 }
