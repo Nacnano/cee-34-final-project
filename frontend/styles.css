@@ -260,6 +260,7 @@ body {
   background-color: var(--primary-clr);
   padding: 10px 15px;
   border-radius: 20px;
+  margin-bottom: 10px;
 }
 
 .assignment .info {
@@ -283,10 +284,6 @@ body {
 
 .assignment h5 {
   font-weight: lighter;
-}
-
-.assignment h4 {
-
 }
 
 .assignment .course-title,

@@ -27,6 +27,9 @@ const months = [
   "December",
 ];
 
+const assignmentsList = [];
+getAssignments();
+
 function createCalendar() {
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
@@ -45,22 +48,30 @@ function createCalendar() {
   }
 
   for (let i = 1; i <= lastDate; i++) {
-    let event = false;
+    let isEvent = false;
+    assignmentsList.forEach((assignment) => {
+      if (
+        assignment.day === i &&
+        assignment.month === month + 1 &&
+        assignment.year === year
+      ) {
+        isEvent = true;
+      }
+    });
     if (
       i === new Date().getDate() &&
       year === new Date().getFullYear() &&
       month === new Date().getMonth()
     ) {
       activeDay = i;
-      //getActiveDay(i);
       //updateEvents(i);
-      if (event) {
+      if (isEvent) {
         days += `<div class="day today active event">${i}</div>`;
       } else {
         days += `<div class="day today active">${i}</div>`;
       }
     } else {
-      if (event) {
+      if (isEvent) {
         days += `<div class="day event">${i}</div>`;
       } else {
         days += `<div class="day ">${i}</div>`;
@@ -73,7 +84,9 @@ function createCalendar() {
   }
 
   daysList.innerHTML = days;
+  addDaysListener();
 }
+
 
 function prevMonthBtnHandler() {
   month--;
@@ -97,6 +110,54 @@ function nextMonthBtnHandler() {
 
 nextBtn.addEventListener("click", nextMonthBtnHandler);
 createCalendar();
+
+function addDaysListener() {
+  const days = document.querySelectorAll(".day");
+  days.forEach((day) => {
+    day.addEventListener("click", (e) => {
+      //updateEvents(Number(e.target.innerHTML));
+      activeDay = Number(e.target.innerHTML);
+      days.forEach((day) => {
+        day.classList.remove("active");
+      });
+      if (e.target.classList.contains("prev-month")) {
+        prevMonthBtnHandler();
+        setTimeout(() => {
+          const days = document.querySelectorAll(".day");
+          days.forEach((day) => {
+            if (day.classList.contains("active")) {
+              day.classList.remove("active")
+            }
+            if (
+              !day.classList.contains("prev-month") &&
+              day.innerHTML === e.target.innerHTML
+            ) {
+              day.classList.add("active");
+            }
+          });
+        }, 100);
+      } else if (e.target.classList.contains("next-month")) {
+        nextMonthBtnHandler();
+        setTimeout(() => {
+          const days = document.querySelectorAll(".day");
+          days.forEach((day) => {
+            if (day.classList.contains("active")) {
+              day.classList.remove("active")
+            }
+            if (
+              !day.classList.contains("next-month") &&
+              day.innerHTML === e.target.innerHTML
+            ) {
+              day.classList.add("active");
+            }
+          });
+        }, 100);
+      } else {
+        e.target.classList.add("active");
+      }
+    });
+  });
+}
 
 todayBtn.addEventListener("click", () => {
   today = new Date();
@@ -134,4 +195,8 @@ function gotoDate() {
     }
   }
   alert("Invalid Date");
+}
+
+function getAssignments() {
+  //TODO push all the assignment to assignmentsList it should have an information of assigment year month day, picture of course, course title, assigment name, assigment due date(just hr:min)
 }
