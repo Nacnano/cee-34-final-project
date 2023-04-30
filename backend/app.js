@@ -7,7 +7,6 @@ dotenv.config({ path: './config.env' })
 
 import AppError from './utils/appError.js'
 import coursevilleRoutes from './routes/coursevilleRoutes.js'
-import * as coursevilleController from './controller/coursevilleController.js'
 
 const app = express()
 
