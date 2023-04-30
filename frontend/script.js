@@ -29,7 +29,8 @@ const months = [
 ];
 
 const assignmentsList = [];
-getAssignments();
+getCourse();
+// getAssignments();
 
 function createCalendar() {
   const firstDay = new Date(year, month, 1);
@@ -204,7 +205,7 @@ function updateEvents(date) {
   assignmentsList.forEach((assignment) => {
     if (
       date === assignment.day &&
-      month + 1 === assignment.month &&
+      month === assignment.month &&
       year === assignment.year
     ) {
       assignment += `        <div class="assignment">
@@ -229,7 +230,87 @@ function updateEvents(date) {
   eventsContainer.innerHTML = assignments;
 }
 
-function getAssignments() {
-  //TODO push all the assignment to assignmentsList. Each assignment should have an information of assignment year month day, picture of course, course title, assignment name, assignment due date(just hr:min)
-  //It would be perfect if the assignment is a class or object in some sort with an attribute: day, month, year, courseImage, courseTitle, title, dueDate
+//Local -> will change to IPV4 public 
+const BackendURL = "http://localhost:3000";
+
+const getUserProfile = async () => {
+  const options = {
+    method: "GET",
+    credentials: "include",
+  };
+  const url = new URL(`${BackendURL}/courseville/get_profile_info`);
+  return await fetch(url,options)
+  .then((response) => response.json());
+};
+
+async function getCourse() {
+  const options = {
+    method: "GET",
+    credentials: "include",
+  };
+  let course_info = [];
+  const url = new URL(`${BackendURL}/courseville/get_courses`)
+  let res = await fetch(url,options);
+  let data = (await res.json()).data.student;
+  // data.filter(course);
+  for (const info of data) {
+    // console.log(course_info);
+    courseAssignmentInfo = await getCoursesAssignments(info.cv_cid)
+    day,month,year = (courseAssignmentInfo.data.duedate).split("-");
+    course_info.push({
+      day: day,
+      month: month,
+      year: year,
+      courseTitle: info.data.title,
+      title: courseAssignmentInfo.data.title,
+      courseImage: info.data.course_icon,
+      cv_cid: info.data.cv_cid,
+      duedate: courseAssignmentInfo.data.duedate
+    });
+  }
 }
+
+// async function getCourseInfo(cv_cid){
+//   const options = {
+//     method: "GET",
+//     credentials: "include",
+//   };
+//   const url = new URL(`${BackendURL}/courseville/get_course_info/`+cv_cid);
+//   try {
+//     const res = await fetch(url,options);
+//     const data = await res.json();
+//     return data;
+//   } catch (err) {
+//     console.log("ERROR");
+//     console.log(err);
+//     return null;
+//   }
+// }
+
+async function getCoursesAssignments(cv_cid){
+  const options = {
+    method: "GET",
+    credentials: "include",
+  };
+  const url = new URL(`${BackendURL}/get_course_assignments/`+cv_cid);
+  try {
+    const res = await fetch(url,options);
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.log("ERROR");
+    console.log(err);
+    return null;
+  }
+}
+// async function getAssignments() {
+//   //TODO push all the assignment to assignmentsList. Each assignment should have 
+//   //an information of assignment year month day, picture of course, course title, 
+//   //assignment name, assignment due date(just hr:min)
+//   //It would be perfect if the assignment is a class or object in some sort with an attribute: day, month, year, courseImage, courseTitle, title, dueDate
+//     const options = {
+//       method: "GET",
+//       credentials: "include",
+//     };
+//     }
+
