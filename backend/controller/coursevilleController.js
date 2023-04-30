@@ -103,7 +103,7 @@ export const getCourses = async (req, res) => {
 }
 
 // TODO: request courses in this function?
-export const getCoursesAssignments = async (access_token, courses) => {
+export const getCoursesAssignments = async courses => {
   const promises = []
   try {
     for (const course of courses) {
@@ -115,7 +115,7 @@ export const getCoursesAssignments = async (access_token, courses) => {
       promises.push(
         axios.get(url, {
           headers: {
-            Authorization: `Bearer ${access_token}`
+            Authorization: `Bearer ${req.session.token.access_token}`
           },
           transformResponse: [
             data => {
