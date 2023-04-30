@@ -2,22 +2,81 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>MyCourseVill</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="image/favicon.ico" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Merriweather&family=Montserrat&family=Sacramento&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="script.js" defer></script>
+    <title>MyCalender</title>
   </head>
 
   <body>
     <header>
-      <h1>Test</h1>
+      <img class="logo" src="images/cv-logo.png" alt="logo" />
     </header>
-  </body>
+    <!--
+    <div class="sidebar">
+      <button class="button text">Upload new task</button>
+    </div>
+    -->
+    <div class="container">
+      <div class="calendar">
+        <div class="header">
+          <div class="date"></div>
+          <div class="month-picker">
+          <button class="prev-month-btn"><</button>
+            <button class="next-month-btn">></button>
+          </div>
+        </div>
+        <div class="weekdays"> 
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+        </div>
+        <div class="days">
+        </div>
+        <div class="footer">
+          <button class="today-btn">TODAY</button>
+          <div class="input">
+            <input type="text" placeholder="mm/yyyy" class="date-input">
+            <button class="goto-btn">GO</button>
+          </div>
+        </div>
+      </div>
 
-  <script src="script.js"></script>
+      <div class="task">
+        
+        <!-- <div class="no-assignment">
+          <h4>No Assignment</h4>
+        </div> -->
+        
+        <div class="assignment">
+          <div class = "info">
+            <div class="imageHolder">
+              <img class="course-icon" src="https://mycourseville-default.s3.ap-southeast-1.amazonaws.com/useruploaded_course_files/2021_2/27352/course_icon/icon_cee_2022-1-16418931038922.png" alt="course-icon">
+            </div>
+            <div class="assignment-info">
+              <h5 class="course-title">Computer Engineering Essentials [Section 33-35]</h3>
+              <h4 class="assignment-title">Activity 12: 5 minutes question</h4>
+            </div>
+          </div>
+          <div class = "due-date">11:55</div>
+        </div>
+        <div class="assignment">
+          <div class = "info">
+            <div class="imageHolder">
+              <img class="course-icon" src="https://mycourseville-default.s3.ap-southeast-1.amazonaws.com/useruploaded_course_files/2021_2/27352/course_icon/icon_cee_2022-1-16418931038922.png" alt="course-icon">
+            </div>
+            <div class="assignment-info">
+              <h5 class="course-title">Computer Engineering Essentials [Section 33-35]</h3>
+              <h4 class="assignment-title">Activity 12: 5 minutes question</h4>
+            </div>
+          </div>
+          <div class = "due-date">11:55</div>
+        </div>
+      </div>
+     
+    </div>
+  </body>
 </html>

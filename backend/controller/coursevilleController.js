@@ -102,6 +102,47 @@ export const getCourses = async (req, res) => {
   }
 }
 
+// TODO: request courses in this function?
+export const getCoursesAssignments = async courses => {
+  const promises = []
+  try {
+    for (const course of courses) {
+      const url = new URL(
+        'https://www.mycourseville.com/api/v1/public/get/course/assignments'
+      )
+      url.searchParams.append('cv_cid', course.cv_cid)
+      url.searchParams.append('detail', '1')
+      promises.push(
+        axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${req.session.token.access_token}`
+          },
+          transformResponse: [
+            data => {
+              const assignments = JSON.parse(data).data
+              return assignments.map(item => ({
+                ...item,
+                course,
+                itemid: String(item.itemid),
+                created: String(item.created),
+                changed: String(item.changed),
+                duetime: String(item.duetime)
+              }))
+            }
+          ]
+        })
+      )
+    }
+    const data = await Promise.all(promises)
+    return data.reduce((acc, item) => {
+      return acc.concat(item.data)
+    }, [])
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
 export const logout = (req, res) => {
   req.session.destroy()
   res.redirect(`http://${process.env.frontendIPAddress}/index.html`)

@@ -1,4 +1,5 @@
-const dotenv = require('dotenv')
+import dotenv from 'dotenv'
+import app from './app.js'
 
 process.on('uncaughtException', err => {
   console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...')
@@ -8,7 +9,6 @@ process.on('uncaughtException', err => {
 })
 
 dotenv.config({ path: './config.env' })
-const app = require('./app')
 
 const port = 3000
 const server = app.listen(port, () => {})

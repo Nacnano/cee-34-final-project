@@ -313,4 +313,3 @@ async function getCoursesAssignments(cv_cid){
 //       credentials: "include",
 //     };
 //     }
-
