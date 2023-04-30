@@ -1,208 +1,211 @@
-const calendar = document.querySelector(".calendar");
-const date = document.querySelector(".date");
-const daysList = document.querySelector(".days");
-const prevBtn = document.querySelector(".prev-month-btn");
-const nextBtn = document.querySelector(".next-month-btn");
-const todayBtn = document.querySelector(".today-btn");
-const gotoBtn = document.querySelector(".goto-btn");
-const dateInput = document.querySelector(".date-input");
-const tasks = document.querySelector(".task");
+const calendar = document.querySelector('.calendar')
+const date = document.querySelector('.date')
+const daysList = document.querySelector('.days')
+const prevBtn = document.querySelector('.prev-month-btn')
+const nextBtn = document.querySelector('.next-month-btn')
+const todayBtn = document.querySelector('.today-btn')
+const gotoBtn = document.querySelector('.goto-btn')
+const dateInput = document.querySelector('.date-input')
+const tasks = document.querySelector('.task')
 
-let currDay = new Date();
-let activeDay;
-let month = currDay.getMonth();
-let year = currDay.getFullYear();
+//Local -> will change to IPV4 public
+const BackendURL = 'http://localhost:3000'
+
+let currDay = new Date()
+let activeDay
+let month = currDay.getMonth()
+let year = currDay.getFullYear()
 
 const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+]
 
-const assignmentsList = [];
-getCourse();
+const assignmentsList = []
+getCourse()
 // getAssignments();
 
-function createCalendar() {
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const prevLastDay = new Date(year, month, 0);
-  const prevDays = prevLastDay.getDate();
-  const lastDate = lastDay.getDate();
-  const day = firstDay.getDay();
-  const nextDays = 7 - lastDay.getDay() - 1;
+function createCalendar () {
+  const firstDay = new Date(year, month, 1)
+  const lastDay = new Date(year, month + 1, 0)
+  const prevLastDay = new Date(year, month, 0)
+  const prevDays = prevLastDay.getDate()
+  const lastDate = lastDay.getDate()
+  const day = firstDay.getDay()
+  const nextDays = 7 - lastDay.getDay() - 1
 
-  date.innerHTML = months[month] + " " + year;
+  date.innerHTML = months[month] + ' ' + year
 
-  let days = "";
+  let days = ''
 
   for (let x = day; x > 0; x--) {
-    days += `<div class="day prev-month">${prevDays - x + 1}</div>`;
+    days += `<div class="day prev-month">${prevDays - x + 1}</div>`
   }
 
   for (let i = 1; i <= lastDate; i++) {
-    let isEvent = false;
+    let isEvent = false
     //TODO: Check if have assignment
-    assignmentsList.forEach((assignment) => {
+    assignmentsList.forEach(assignment => {
       if (
         assignment.day === i &&
         assignment.month === month + 1 &&
         assignment.year === year
       ) {
-        isEvent = true;
+        isEvent = true
       }
-    });
+    })
     //TODO END HERE
     if (
       i === new Date().getDate() &&
       year === new Date().getFullYear() &&
       month === new Date().getMonth()
     ) {
-      activeDay = i;
+      activeDay = i
       //updateEvents(i);
       if (isEvent) {
-        days += `<div class="day today active event">${i}</div>`;
+        days += `<div class="day today active event">${i}</div>`
       } else {
-        days += `<div class="day today active">${i}</div>`;
+        days += `<div class="day today active">${i}</div>`
       }
     } else {
       if (isEvent) {
-        days += `<div class="day event">${i}</div>`;
+        days += `<div class="day event">${i}</div>`
       } else {
-        days += `<div class="day ">${i}</div>`;
+        days += `<div class="day ">${i}</div>`
       }
     }
   }
 
   for (let j = 1; j <= nextDays; j++) {
-    days += `<div class="day next-month">${j}</div>`;
+    days += `<div class="day next-month">${j}</div>`
   }
 
-  daysList.innerHTML = days;
-  addDaysListener();
+  daysList.innerHTML = days
+  addDaysListener()
 }
 
-function prevMonthBtnHandler() {
-  month--;
+function prevMonthBtnHandler () {
+  month--
   if (month < 0) {
-    month = 11;
-    year--;
+    month = 11
+    year--
   }
-  createCalendar();
+  createCalendar()
 }
 
-prevBtn.addEventListener("click", prevMonthBtnHandler);
+prevBtn.addEventListener('click', prevMonthBtnHandler)
 
-function nextMonthBtnHandler() {
-  month++;
+function nextMonthBtnHandler () {
+  month++
   if (month > 11) {
-    month = 0;
-    year++;
+    month = 0
+    year++
   }
-  createCalendar();
+  createCalendar()
 }
 
-nextBtn.addEventListener("click", nextMonthBtnHandler);
-createCalendar();
+nextBtn.addEventListener('click', nextMonthBtnHandler)
+createCalendar()
 
-function addDaysListener() {
-  const days = document.querySelectorAll(".day");
-  days.forEach((day) => {
-    day.addEventListener("click", (e) => {
+function addDaysListener () {
+  const days = document.querySelectorAll('.day')
+  days.forEach(day => {
+    day.addEventListener('click', e => {
       //updateEvents(Number(e.target.innerHTML));
-      activeDay = Number(e.target.innerHTML);
-      days.forEach((day) => {
-        day.classList.remove("active");
-      });
-      if (e.target.classList.contains("prev-month")) {
-        prevMonthBtnHandler();
+      activeDay = Number(e.target.innerHTML)
+      days.forEach(day => {
+        day.classList.remove('active')
+      })
+      if (e.target.classList.contains('prev-month')) {
+        prevMonthBtnHandler()
         setTimeout(() => {
-          const days = document.querySelectorAll(".day");
-          days.forEach((day) => {
-            if (day.classList.contains("active")) {
-              day.classList.remove("active");
+          const days = document.querySelectorAll('.day')
+          days.forEach(day => {
+            if (day.classList.contains('active')) {
+              day.classList.remove('active')
             }
             if (
-              !day.classList.contains("prev-month") &&
+              !day.classList.contains('prev-month') &&
               day.innerHTML === e.target.innerHTML
             ) {
-              day.classList.add("active");
+              day.classList.add('active')
             }
-          });
-        }, 100);
-      } else if (e.target.classList.contains("next-month")) {
-        nextMonthBtnHandler();
+          })
+        }, 100)
+      } else if (e.target.classList.contains('next-month')) {
+        nextMonthBtnHandler()
         setTimeout(() => {
-          const days = document.querySelectorAll(".day");
-          days.forEach((day) => {
-            if (day.classList.contains("active")) {
-              day.classList.remove("active");
+          const days = document.querySelectorAll('.day')
+          days.forEach(day => {
+            if (day.classList.contains('active')) {
+              day.classList.remove('active')
             }
             if (
-              !day.classList.contains("next-month") &&
+              !day.classList.contains('next-month') &&
               day.innerHTML === e.target.innerHTML
             ) {
-              day.classList.add("active");
+              day.classList.add('active')
             }
-          });
-        }, 100);
+          })
+        }, 100)
       } else {
-        e.target.classList.add("active");
+        e.target.classList.add('active')
       }
-    });
-  });
+    })
+  })
 }
 
-todayBtn.addEventListener("click", () => {
-  today = new Date();
-  month = today.getMonth();
-  year = today.getFullYear();
-  createCalendar();
-});
+todayBtn.addEventListener('click', () => {
+  today = new Date()
+  month = today.getMonth()
+  year = today.getFullYear()
+  createCalendar()
+})
 
-dateInput.addEventListener("input", (e) => {
-  dateInput.value = dateInput.value.replace(/[^0-9/]/g, "");
+dateInput.addEventListener('input', e => {
+  dateInput.value = dateInput.value.replace(/[^0-9/]/g, '')
   if (dateInput.value.length === 2) {
-    dateInput.value += "/";
+    dateInput.value += '/'
   }
   if (dateInput.value.length > 7) {
-    dateInput.value = dateInput.value.slice(0, 7);
+    dateInput.value = dateInput.value.slice(0, 7)
   }
-  if (e.inputType === "deleteContentBackward") {
+  if (e.inputType === 'deleteContentBackward') {
     if (dateInput.value.length === 3) {
-      dateInput.value = dateInput.value.slice(0, 2);
+      dateInput.value = dateInput.value.slice(0, 2)
     }
   }
-});
+})
 
-gotoBtn.addEventListener("click", gotoDate);
+gotoBtn.addEventListener('click', gotoDate)
 
-function gotoDate() {
-  const dateArr = dateInput.value.split("/");
+function gotoDate () {
+  const dateArr = dateInput.value.split('/')
   if (dateArr.length === 2) {
     if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
-      month = dateArr[0] - 1;
-      year = dateArr[1];
-      dateInput.value = "";
-      createCalendar();
-      return;
+      month = dateArr[0] - 1
+      year = dateArr[1]
+      dateInput.value = ''
+      createCalendar()
+      return
     }
   }
-  alert("Invalid Date");
+  alert('Invalid Date')
 }
 //TODO: Make this function work
-function updateEvents(date) {
-  let assignments = "";
-  assignmentsList.forEach((assignment) => {
+function updateEvents (date) {
+  let assignments = ''
+  assignmentsList.forEach(assignment => {
     if (
       date === assignment.day &&
       month === assignment.month &&
@@ -219,44 +222,40 @@ function updateEvents(date) {
       </div>
     </div>
     <div class = "due-date">${assignment.dueDate}</div>
-  </div>`;
+  </div>`
     }
-    if (assignments === "") {
+    if (assignments === '') {
       assignments = `<div class="no-assignment">
             <h4>No Assignment</h4>
-        </div>`;
+        </div>`
     }
-  });
-  eventsContainer.innerHTML = assignments;
+  })
+  eventsContainer.innerHTML = assignments
 }
-
-//Local -> will change to IPV4 public 
-const BackendURL = "http://localhost:3000";
 
 const getUserProfile = async () => {
   const options = {
-    method: "GET",
-    credentials: "include",
-  };
-  const url = new URL(`${BackendURL}/courseville/get_profile_info`);
-  return await fetch(url,options)
-  .then((response) => response.json());
-};
+    method: 'GET',
+    credentials: 'include'
+  }
+  const url = new URL(`${BackendURL}/courseville/get_profile_info`)
+  return await fetch(url, options).then(response => response.json())
+}
 
-async function getCourse() {
+async function getCourse () {
   const options = {
-    method: "GET",
-    credentials: "include",
-  };
-  let course_info = [];
+    method: 'GET',
+    credentials: 'include'
+  }
+  let course_info = []
   const url = new URL(`${BackendURL}/courseville/get_courses`)
-  let res = await fetch(url,options);
-  let data = (await res.json()).data.student;
+  let res = await fetch(url, options)
+  let data = (await res.json()).data.student
   // data.filter(course);
   for (const info of data) {
     // console.log(course_info);
     courseAssignmentInfo = await getCoursesAssignments(info.cv_cid)
-    day,month,year = (courseAssignmentInfo.data.duedate).split("-");
+    day, month, (year = courseAssignmentInfo.data.duedate.split('-'))
     course_info.push({
       day: day,
       month: month,
@@ -266,7 +265,7 @@ async function getCourse() {
       courseImage: info.data.course_icon,
       cv_cid: info.data.cv_cid,
       duedate: courseAssignmentInfo.data.duedate
-    });
+    })
   }
 }
 
@@ -287,25 +286,25 @@ async function getCourse() {
 //   }
 // }
 
-async function getCoursesAssignments(cv_cid){
+async function getCoursesAssignments (cv_cid) {
   const options = {
-    method: "GET",
-    credentials: "include",
-  };
-  const url = new URL(`${BackendURL}/get_course_assignments/`+cv_cid);
+    method: 'GET',
+    credentials: 'include'
+  }
+  const url = new URL(`${BackendURL}/get_course_assignments/` + cv_cid)
   try {
-    const res = await fetch(url,options);
-    const data = await res.json();
-    return data;
+    const res = await fetch(url, options)
+    const data = await res.json()
+    return data
   } catch (err) {
-    console.log("ERROR");
-    console.log(err);
-    return null;
+    console.log('ERROR')
+    console.log(err)
+    return null
   }
 }
 // async function getAssignments() {
-//   //TODO push all the assignment to assignmentsList. Each assignment should have 
-//   //an information of assignment year month day, picture of course, course title, 
+//   //TODO push all the assignment to assignmentsList. Each assignment should have
+//   //an information of assignment year month day, picture of course, course title,
 //   //assignment name, assignment due date(just hr:min)
 //   //It would be perfect if the assignment is a class or object in some sort with an attribute: day, month, year, courseImage, courseTitle, title, dueDate
 //     const options = {
