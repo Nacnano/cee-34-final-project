@@ -102,6 +102,7 @@ export const getCourses = async (req, res) => {
   }
 }
 
+// TODO: request courses in this function?
 export const getCoursesAssignments = async (access_token, courses) => {
   const promises = []
   try {
