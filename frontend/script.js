@@ -30,11 +30,17 @@ const months = [
   'November',
   'December'
 ]
+// let assignmentsList;
+// assignmentsList = Promise.resolve(getCourses());
 
-const assignmentsList = []
-// getAssignments();
 
-function createCalendar () {
+// assignmentsList = await getCourses()
+
+// console.log("assignmentList = " ,assignmentsList)
+// console.log(getCourses());
+
+async function createCalendar () {
+  const assignmentsList = await getCourses()
   const firstDay = new Date(year, month, 1)
   const lastDay = new Date(year, month + 1, 0)
   const prevLastDay = new Date(year, month, 0)
@@ -57,7 +63,7 @@ function createCalendar () {
     assignmentsList.forEach(assignment => {
       if (
         assignment.day === i &&
-        assignment.month === month + 1 &&
+        assignment.month === month + 1&&
         assignment.year === year
       ) {
         isEvent = true
@@ -70,7 +76,7 @@ function createCalendar () {
       month === new Date().getMonth()
     ) {
       activeDay = i
-      //updateEvents(i);
+      updateEvents(i);
       if (isEvent) {
         days += `<div class="day today active event">${i}</div>`
       } else {
@@ -93,34 +99,37 @@ function createCalendar () {
   addDaysListener()
 }
 
-function prevMonthBtnHandler () {
+async function prevMonthBtnHandler () {
   month--
   if (month < 0) {
     month = 11
     year--
   }
-  createCalendar()
+  await createCalendar()
 }
 
 prevBtn.addEventListener('click', prevMonthBtnHandler)
 
-function nextMonthBtnHandler () {
+async function nextMonthBtnHandler () {
   month++
   if (month > 11) {
     month = 0
     year++
   }
-  createCalendar()
+  await createCalendar()
 }
 
 nextBtn.addEventListener('click', nextMonthBtnHandler)
-createCalendar()
+// createCalendar()
+document.addEventListener("DOMContentLoaded", async function () {
+  await createCalendar();
+});
 
 function addDaysListener () {
   const days = document.querySelectorAll('.day')
   days.forEach(day => {
     day.addEventListener('click', e => {
-      //updateEvents(Number(e.target.innerHTML));
+      updateEvents(Number(e.target.innerHTML));
       activeDay = Number(e.target.innerHTML)
       days.forEach(day => {
         day.classList.remove('active')
@@ -164,11 +173,11 @@ function addDaysListener () {
   })
 }
 
-todayBtn.addEventListener('click', () => {
+todayBtn.addEventListener('click',async () => {
   today = new Date()
   month = today.getMonth()
   year = today.getFullYear()
-  createCalendar()
+  await createCalendar()
 })
 
 dateInput.addEventListener('input', e => {
@@ -188,29 +197,30 @@ dateInput.addEventListener('input', e => {
 
 gotoBtn.addEventListener('click', gotoDate)
 
-function gotoDate () {
+async function gotoDate () {
   const dateArr = dateInput.value.split('/')
   if (dateArr.length === 2) {
     if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
       month = dateArr[0] - 1
       year = dateArr[1]
       dateInput.value = ''
-      createCalendar()
+      await createCalendar()
       return
     }
   }
   alert('Invalid Date')
 }
 //TODO: Make this function work
-function updateEvents (date) {
+async function updateEvents (date) {
   let assignments = ''
+  assignmentsList = await getCourses()
   assignmentsList.forEach(assignment => {
     if (
       date === assignment.day &&
       month === assignment.month &&
       year === assignment.year
     ) {
-      assignment += `        <div class="assignment">
+      assignments += `        <div class="assignment">
     <div class = "info">
       <div class="imageHolder">
         <img class="course-icon" src="${assignment.courseImage}" alt="course-icon">
@@ -229,7 +239,7 @@ function updateEvents (date) {
         </div>`
     }
   })
-  eventsContainer.innerHTML = assignments
+  // eventsContainer.innerHTML = assignments
 }
 
 const getUserProfile = async () => {
@@ -237,39 +247,55 @@ const getUserProfile = async () => {
     method: 'GET',
     credentials: 'include'
   }
-  const url = new URL(`${BackendURL}/courseville/get_profile_info`)
+  const url = new URL(`${BackendURL}/courseville/me`)
   return await fetch(url, options).then(response => response.json())
 }
 
-async function getCourses () {
+async function getCourses() {
   const options = {
     method: 'GET',
     credentials: 'include'
   }
   let course_info = []
   const url = new URL(`${BackendURL}/courseville/get_courses`)
-  console.log('Get courses from', url)
-  let res = await fetch(url, options)
-  console.log(res)
-  let data = await res.json()
-  // data.filter(course);
+  // console.log('Get courses from', url)
+  const res = await fetch(url, options)
+  // console.log(res)
+  const data = await res.json()
   for (const info of data) {
-    console.log('Course Info', info)
-    courseAssignmentInfo = await getCoursesAssignments(info.cv_cid)
-    console.log(info.cv_cid, courseAssignmentInfo)
-    if (!courseAssignmentInfo.data) continue
-    let [day, month, year] = courseAssignmentInfo.data.duedate.split('-')
-    course_info.push({
-      day: day,
-      month: month,
-      year: year,
-      courseTitle: info.data.title,
-      title: courseAssignmentInfo.data.title,
-      courseImage: info.data.course_icon,
-      cv_cid: info.data.cv_cid,
-      duedate: courseAssignmentInfo.data.duedate
-    })
+    
+    assignment = await getCoursesAssignments(info.cv_cid)
+    console.log(info.cv_cid, assignment)
+    let day,month,year,title,duedate;
+    if (!assignment.data) continue
+    for (const assignment_info of assignment.data){
+      if (assignment_info.duedate === null) continue      
+      [year , month, day] = assignment_info.duedate.split('-')
+      title = assignment_info.title
+      duedate = assignment_info.duedate
+      course_info.push({
+        day: Number(day),
+        month: Number(month),
+        year: Number(year),
+        courseTitle: info.title,
+        title: title,
+        courseImage: info.course_icon,
+        cv_cid: info.cv_cid,
+        dueDate: duedate
+      })
+    }
   }
+  const lastYear = course_info.reduce((prev, curr) =>
+    prev.year > curr.year ? prev.year : curr.year
+  );
+
+  // remove now-1
+  course_info = course_info.filter((course) => {
+    return course.year == lastYear;
+  });
+
+  console.log(course_info)
+  return course_info;
 }
 
 // async function getCourseInfo(cv_cid){
@@ -320,6 +346,3 @@ async function getCoursesAssignments (cv_cid) {
 
 // const getCoursesBtn = document.querySelector('.getcourses-btn')
 // getCoursesBtn.addEventListener('click', getCourses())
-
-getCourses()
-//getAssignments()
