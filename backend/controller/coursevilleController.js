@@ -130,8 +130,7 @@ export const getCourseAssignments = (req, _res) => {
   const cv_cid = req.params.cv_cid
   console.log(`Fetching Assignments from ${cv_cid}`)
   const assessmentReq = https.request(
-    'https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=' +
-      cv_cid,
+    `https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=${cv_cid}&detail=1`,
     {
       headers: {
         Authorization: `Bearer ${req.session.token.access_token}`
