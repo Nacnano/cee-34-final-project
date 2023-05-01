@@ -32,7 +32,6 @@ const months = [
 ]
 
 const assignmentsList = []
-getCourse()
 // getAssignments();
 
 function createCalendar () {
@@ -242,7 +241,7 @@ const getUserProfile = async () => {
   return await fetch(url, options).then(response => response.json())
 }
 
-async function getCourse () {
+async function getCourses () {
   const options = {
     method: 'GET',
     credentials: 'include'
@@ -251,13 +250,15 @@ async function getCourse () {
   const url = new URL(`${BackendURL}/courseville/get_courses`)
   console.log('Get courses from', url)
   let res = await fetch(url, options)
-  let data = (await res.json()).data.student
-  console.log(data)
+  console.log(res)
+  let data = await res.json()
   // data.filter(course);
   for (const info of data) {
-    // console.log(course_info);
+    console.log('Course Info', info)
     courseAssignmentInfo = await getCoursesAssignments(info.cv_cid)
-    day, month, (year = courseAssignmentInfo.data.duedate.split('-'))
+    console.log(info.cv_cid, courseAssignmentInfo)
+    if (!courseAssignmentInfo.data) continue
+    let [day, month, year] = courseAssignmentInfo.data.duedate.split('-')
     course_info.push({
       day: day,
       month: month,
@@ -316,3 +317,9 @@ async function getCoursesAssignments (cv_cid) {
 //       credentials: "include",
 //     };
 //     }
+
+// const getCoursesBtn = document.querySelector('.getcourses-btn')
+// getCoursesBtn.addEventListener('click', getCourses())
+
+getCourses()
+//getAssignments()
