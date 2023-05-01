@@ -48,7 +48,7 @@ export const accessToken = (req, res) => {
       tokenRes.on('end', () => {
         const token = JSON.parse(tokenData)
         req.session.token = token
-        console.log('LOGGING IN', req.sessionID, req.session)
+        console.log('Logging in', req.session.token)
         if (token) {
           res.writeHead(302, {
             Location: `http://${process.env.frontendIPAddress}`
@@ -69,6 +69,7 @@ export const accessToken = (req, res) => {
 }
 
 export const getProfileInformation = async (req, res) => {
+  console.log('Fetching Profile')
   try {
     const profileOptions = {
       headers: {
@@ -101,7 +102,7 @@ export const getProfileInformation = async (req, res) => {
 }
 
 export const getCourses = async (req, res) => {
-  console.log('GETTING COURSES', req.sessionID, req.session)
+  console.log('Fetching Courses')
   try {
     const options = {
       headers: {
@@ -127,6 +128,7 @@ export const getCourses = async (req, res) => {
 
 export const getCourseAssignments = (req, _res) => {
   const cv_cid = req.params.cv_cid
+  console.log(`Fetching Assignments from ${cv_cid}`)
   const assessmentReq = https.request(
     'https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=' +
       cv_cid,

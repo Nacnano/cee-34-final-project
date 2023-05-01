@@ -8,7 +8,7 @@ router.get('/access_token', coursevilleController.accessToken)
 router.get('/me', coursevilleController.getProfileInformation)
 router.get('/get_courses', coursevilleController.getCourses)
 router.get(
-  '/get_course_assignments',
+  '/get_course_assignments/:cv_cid',
   coursevilleController.getCourseAssignments
 )
 router.get('/logout', coursevilleController.logout)
