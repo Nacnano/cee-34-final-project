@@ -125,45 +125,32 @@ export const getCourses = async (req, res) => {
   }
 }
 
-// TODO: request courses in this function?
-export const getCourseAssignments = async courses => {
-  const promises = []
-  try {
-    for (const course of courses) {
-      const url = new URL(
-        'https://www.mycourseville.com/api/v1/public/get/course/assignments'
-      )
-      url.searchParams.append('cv_cid', course.cv_cid)
-      url.searchParams.append('detail', '1')
-      promises.push(
-        axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${req.session.token.access_token}`
-          },
-          transformResponse: [
-            data => {
-              const assignments = JSON.parse(data).data
-              return assignments.map(item => ({
-                ...item,
-                course,
-                itemid: String(item.itemid),
-                created: String(item.created),
-                changed: String(item.changed),
-                duetime: String(item.duetime)
-              }))
-            }
-          ]
-        })
-      )
+export const getCourseAssignments = (req, _res) => {
+  const cv_cid = req.params.cv_cid
+  const assessmentReq = https.request(
+    'https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=' +
+      cv_cid,
+    {
+      headers: {
+        Authorization: `Bearer ${req.session.token.access_token}`
+      }
+    },
+    res => {
+      let data = ''
+      res.on('data', chunk => {
+        data += chunk
+      })
+      res.on('end', () => {
+        const profile = JSON.parse(data)
+        _res.send(profile)
+        _res.end()
+      })
     }
-    const data = await Promise.all(promises)
-    return data.reduce((acc, item) => {
-      return acc.concat(item.data)
-    }, [])
-  } catch (err) {
-    console.log(err)
-    return null
-  }
+  )
+  assessmentReq.on('error', err => {
+    console.error(err)
+  })
+  assessmentReq.end()
 }
 
 export const logout = (req, res) => {
