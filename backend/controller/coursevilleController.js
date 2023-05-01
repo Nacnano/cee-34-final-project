@@ -79,6 +79,7 @@ export const getProfileInformation = async (req, res) => {
 }
 
 export const getCourses = async (req, res) => {
+  console.log('GET COURSES', req.sessionID, req.session)
   try {
     const options = {
       headers: {

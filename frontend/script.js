@@ -249,8 +249,10 @@ async function getCourse () {
   }
   let course_info = []
   const url = new URL(`${BackendURL}/courseville/get_courses`)
+  console.log('Get courses from', url)
   let res = await fetch(url, options)
   let data = (await res.json()).data.student
+  console.log(data)
   // data.filter(course);
   for (const info of data) {
     // console.log(course_info);
