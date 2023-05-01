@@ -3,6 +3,7 @@ dotenv.config()
 import https from 'https'
 import url from 'url'
 import querystring from 'querystring'
+import fetch from 'node-fetch'
 
 const redirect_uri = `http://${process.env.backendIPAddress}/courseville/access_token`
 const authorization_url = `https://www.mycourseville.com/api/oauth/authorize?response_type=code&client_id=${process.env.client_id}&redirect_uri=${redirect_uri}`
@@ -47,10 +48,10 @@ export const accessToken = (req, res) => {
       tokenRes.on('end', () => {
         const token = JSON.parse(tokenData)
         req.session.token = token
-        console.log(req.session)
+        console.log('LOGGING IN', req.sessionID, req.session)
         if (token) {
           res.writeHead(302, {
-            Location: `http://${process.env.frontendIPAddress}/index.html`
+            Location: `http://${process.env.frontendIPAddress}`
           })
           res.end()
         }
@@ -69,9 +70,30 @@ export const accessToken = (req, res) => {
 
 export const getProfileInformation = async (req, res) => {
   try {
-    console.log(req.user)
-
-    res.send(req.user)
+    const profileOptions = {
+      headers: {
+        Authorization: `Bearer ${req.session.token.access_token}`
+      }
+    }
+    const profileReq = https.request(
+      'https://www.mycourseville.com/api/v1/public/users/me',
+      profileOptions,
+      profileRes => {
+        let profileData = ''
+        profileRes.on('data', chunk => {
+          profileData += chunk
+        })
+        profileRes.on('end', () => {
+          const profile = JSON.parse(profileData)
+          res.send(profile)
+          res.end()
+        })
+      }
+    )
+    profileReq.on('error', err => {
+      console.error(err)
+    })
+    profileReq.end()
   } catch (error) {
     console.log(error)
     console.log('Please logout, then login again.')
@@ -79,7 +101,7 @@ export const getProfileInformation = async (req, res) => {
 }
 
 export const getCourses = async (req, res) => {
-  console.log('GET COURSES', req.sessionID, req.session)
+  console.log('GETTING COURSES', req.sessionID, req.session)
   try {
     const options = {
       headers: {
@@ -104,7 +126,7 @@ export const getCourses = async (req, res) => {
 }
 
 // TODO: request courses in this function?
-export const getCoursesAssignments = async courses => {
+export const getCourseAssignments = async courses => {
   const promises = []
   try {
     for (const course of courses) {
@@ -146,6 +168,7 @@ export const getCoursesAssignments = async courses => {
 
 export const logout = (req, res) => {
   req.session.destroy()
+  console.log('LOGOUT')
   res.redirect(`http://${process.env.frontendIPAddress}/index.html`)
   res.end()
 }

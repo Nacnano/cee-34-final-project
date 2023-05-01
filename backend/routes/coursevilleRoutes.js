@@ -9,7 +9,7 @@ router.get('/me', coursevilleController.getProfileInformation)
 router.get('/get_courses', coursevilleController.getCourses)
 router.get(
   '/get_course_assignments',
-  coursevilleController.getCoursesAssignments
+  coursevilleController.getCourseAssignments
 )
 router.get('/logout', coursevilleController.logout)
 

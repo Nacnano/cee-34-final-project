@@ -9,7 +9,7 @@ const dateInput = document.querySelector('.date-input')
 const tasks = document.querySelector('.task')
 
 //Local -> will change to IPV4 public
-const BackendURL = 'http://localhost:3000'
+const BackendURL = 'http://127.0.0.1:3000'
 
 let currDay = new Date()
 let activeDay
@@ -293,7 +293,9 @@ async function getCoursesAssignments (cv_cid) {
     method: 'GET',
     credentials: 'include'
   }
-  const url = new URL(`${BackendURL}/get_course_assignments/` + cv_cid)
+  const url = new URL(
+    `${BackendURL}/courseville/get_course_assignments/` + cv_cid
+  )
   try {
     const res = await fetch(url, options)
     const data = await res.json()
