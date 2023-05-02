@@ -15,6 +15,7 @@ let currDay = new Date()
 let activeDay
 let month = currDay.getMonth()
 let year = currDay.getFullYear()
+let loader
 
 const months = [
   'January',
@@ -31,14 +32,30 @@ const months = [
   'December'
 ]
 
-let assignmentsList
+let assignmentsList = []
 
 async function renderPage () {
-  assignmentsList = await getCourses()
-  await createCalendar()
+  createCalendar()
+  addLoading()
+
+  await getCourses().then(() => {
+    createCalendar()
+    RemoveLoading()
+  })
 }
 
-async function createCalendar () {
+function addLoading () {
+  const loaderDiv = `<div class='loader'/>'`
+  tasks.innerHTML = loaderDiv
+  loader = document.getElementsByClassName('loader')[0]
+  loader.style.display = 'block'
+}
+
+function RemoveLoading () {
+  loader.style.display = 'none'
+}
+
+function createCalendar () {
   const firstDay = new Date(year, month, 1)
   const lastDay = new Date(year, month + 1, 0)
   const prevLastDay = new Date(year, month, 0)
@@ -57,17 +74,19 @@ async function createCalendar () {
 
   for (let i = 1; i <= lastDate; i++) {
     let isEvent = false
-    //TODO: Check if have assignment
-    assignmentsList.forEach(assignment => {
-      if (
-        assignment.day === i &&
-        assignment.month === month + 1 &&
-        assignment.year === year
-      ) {
-        isEvent = true
-      }
-    })
-    //TODO END HERE
+
+    if (assignmentsList)
+      assignmentsList.forEach(assignment => {
+        console.log(i, month + 1, year, assignment)
+        if (
+          assignment.day === i &&
+          assignment.month === month + 1 &&
+          assignment.year === year
+        ) {
+          isEvent = true
+        }
+      })
+
     if (
       i === new Date().getDate() &&
       year === new Date().getFullYear() &&
@@ -97,24 +116,24 @@ async function createCalendar () {
   addDaysListener()
 }
 
-async function prevMonthBtnHandler () {
+function prevMonthBtnHandler () {
   month--
   if (month < 0) {
     month = 11
     year--
   }
-  await createCalendar()
+  createCalendar()
 }
 
 prevBtn.addEventListener('click', prevMonthBtnHandler)
 
-async function nextMonthBtnHandler () {
+function nextMonthBtnHandler () {
   month++
   if (month > 11) {
     month = 0
     year++
   }
-  await createCalendar()
+  createCalendar()
 }
 
 nextBtn.addEventListener('click', nextMonthBtnHandler)
@@ -167,11 +186,11 @@ function addDaysListener () {
   })
 }
 
-todayBtn.addEventListener('click', async () => {
+todayBtn.addEventListener('click', () => {
   today = new Date()
   month = today.getMonth()
   year = today.getFullYear()
-  await createCalendar()
+  createCalendar()
 })
 
 dateInput.addEventListener('input', e => {
@@ -191,32 +210,31 @@ dateInput.addEventListener('input', e => {
 
 gotoBtn.addEventListener('click', gotoDate)
 
-async function gotoDate () {
+function gotoDate () {
   const dateArr = dateInput.value.split('/')
   if (dateArr.length === 2) {
     if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
       month = dateArr[0] - 1
       year = dateArr[1]
       dateInput.value = ''
-      await createCalendar()
+      createCalendar()
       return
     }
   }
   alert('Invalid Date')
 }
 //TODO: Make this function work
-async function updateEvents (date) {
+function updateEvents (date) {
   let assignments = ''
-  assignmentsList.forEach(assignment => {
-    console.log(date, month + 1, year, assignment)
 
-    if (
-      date === assignment.day &&
-      month + 1 === assignment.month &&
-      year === assignment.year
-    ) {
-      console.log('assignment', assignments)
-      assignments += `        <div class="assignment">
+  if (assignmentsList)
+    assignmentsList.forEach(assignment => {
+      if (
+        date === assignment.day &&
+        month + 1 === assignment.month &&
+        year === assignment.year
+      ) {
+        assignments += `        <div class="assignment">
     <div class = "info">
       <div class="imageHolder">
         <img class="course-icon" src="${assignment.courseImage}" alt="course-icon">
@@ -228,8 +246,8 @@ async function updateEvents (date) {
     </div>
     <div class = "due-date">${assignment.dueDate}</div>
   </div>`
-    }
-  })
+      }
+    })
 
   if (assignments === '') {
     assignments = `<div class="no-assignment">
@@ -284,7 +302,7 @@ async function getCourses () {
     )
     course_info = course_info.filter(course => course.year == lastYear)
     console.log(course_info)
-    return course_info
+    assignmentsList = course_info
   } catch (err) {
     console.log('Error: ', err)
     return null
