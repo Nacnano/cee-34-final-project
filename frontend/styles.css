@@ -132,7 +132,7 @@ body {
   font-weight: bold;
 }
 
-.calendar .prex{
+.calendar .prex {
   margin-right: 20px;
 }
 
@@ -377,7 +377,6 @@ body {
   justify-content: center;
 }
 
-
 .add-reminder-body {
   margin-bottom: 20px;
 }
@@ -407,12 +406,33 @@ body {
 .reminderShow {
   display: flex;
   justify-content: space-between;
+  background-color: gray;
+  padding: 10px 15px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  align-items: center;
 }
 
 .reminderShow1 {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .reminderShow2 {
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reminderShow-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.reminderShow-text {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border-radius: 8px;
 }
