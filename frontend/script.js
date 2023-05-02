@@ -46,6 +46,10 @@ async function renderPage () {
 
   await getCourses().then(() => {
     createCalendar()
+  })
+
+  await getReminders().then(() => {
+    createCalendar()
     RemoveLoading()
   })
 }
@@ -83,7 +87,6 @@ function createCalendar () {
 
     if (assignmentsList)
       assignmentsList.forEach(assignment => {
-        console.log(i, month + 1, year, assignment)
         if (
           assignment.day === i &&
           assignment.month === month + 1 &&
