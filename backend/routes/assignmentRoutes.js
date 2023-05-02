@@ -3,11 +3,8 @@ import * as assignmentsController from '../controller/assignmentsController.js'
 
 const router = Router()
 
-router.post('/', assignmentController.addAssignment)
-router.get('/', assignmentController.getAssignedAssignments)
-router.get('/missed', assignmentController.getMissedAssignments)
-router.get('/done', assignmentController.getDoneAssignments)
-router.get('/courses', assignmentController.getCourses)
-router.put('/', assignmentController.updateAssignment)
+router.get('/', assignmentsController.getReminders)
+router.post('/', assignmentsController.addReminder)
+router.delete('/:reminder_id', assignmentsController.deleteReminder)
 
 export default router

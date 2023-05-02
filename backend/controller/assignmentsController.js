@@ -2,17 +2,12 @@ import dotenv from 'dotenv'
 dotenv.config()
 import { DynamoDBClient, BatchWriteItemCommand } from '@aws-sdk/client-dynamodb'
 import { PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb'
-import { axios } from 'axios'
+import { getProfileInformation } from './coursevilleController.js'
 
 const docClient = new DynamoDBClient({ regions: process.env.AWS_REGION })
 
 export const getReminders = async (req, res) => {
-  const options = {
-    headers: {
-      Authorization: `Bearer ${req.session.token.access_token}`
-    }
-  }
-  const profile = await coursevilleUtils.getProfileInformation(options)
+  const profile = await getProfileInformation()
   const params = {
     TableName: process.env.AWS_ASSIGNMENT_TABLE_NAME,
     FilterExpression: 'user_id = :id',
@@ -30,12 +25,7 @@ export const getReminders = async (req, res) => {
 }
 
 export const addReminder = async (req, res) => {
-  const options = {
-    headers: {
-      Authorization: `Bearer ${req.session.token.access_token}`
-    }
-  }
-  const profile = await coursevilleUtils.getProfileInformation(options)
+  const profile = await getProfileInformation()
   const reminder_id = uuidv4()
   const created_date = Date.now()
   const reminder = {
@@ -59,12 +49,7 @@ export const addReminder = async (req, res) => {
 }
 
 export const deleteReminder = async (req, res) => {
-  const options = {
-    headers: {
-      Authorization: `Bearer ${req.session.token.access_token}`
-    }
-  }
-  const profile = await coursevilleUtils.getProfileInformation(options)
+  const profile = await getProfileInformation()
   const reminder_id = req.params.reminder_id
   const params = {
     TableName: process.env.AWS_ASSIGNMENT_TABLE_NAME,
