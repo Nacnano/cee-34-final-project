@@ -11,7 +11,7 @@ const addReminderBtn = document.querySelector(".add-reminder-btn");
 const deleteReminderBtn = document.querySelector(".delete-reminder-btn");
 const loginBtn = document.querySelector(".login-btn");
 const logoutBtn = document.querySelector(".logout-btn");
-const confirmBtn = document.querySelector(".confirm");
+const confirmBtn = document.querySelector(".confirm-btn");
 const reminderMessageInput = document.querySelector(".reminder-message");
 const reminderDateInput = document.querySelector("reminder-date");
 
@@ -260,7 +260,27 @@ function updateEvents(date) {
   </div>`;
       }
     });
+  
 
+  if (remindersList)
+    remindersList.forEach((reminder) => {
+      if (
+        date === reminder.day &&
+        month === reminder.reminderMonth &&
+        year === reminder.reminderYear
+      ) {
+        assignments += `                  <div class = "reminderShow">
+        <div class = "reminderShow1">
+          <img src="./images/reminder-icon.png" alt="">
+          <div class = "reminderShow-text"> ${reminder.message}</div>
+        </div>
+        <div class = "reminderShow2">
+          <div class = "reminderShow-time">${reminder.date}</div>
+          <button class = "reminderShow-button" onclick= "">X</button>
+        </div>
+      </div>`;
+      }
+    });
   if (assignments === "") {
     assignments = `<div class="no-assignment">
           <h4>No Assignment</h4>
@@ -375,12 +395,23 @@ async function getReminders() {
 //   })
 // }
 
+function confirmBtnHandler() {
+  addReminder();
+  getReminders();
+  updateEvents(activeDay);
+}
+
+confirmBtn.addEventListener("click", confirmBtnHandler);
+
 async function addReminder() {
   reminderMessage = document.querySelector(".reminder-message");
   reminderDate = document.querySelector(".reminder-date");
   reminderData = {
-    message: reminderInfo.value,
+    message: reminderMessage.value,
     date: reminderDate.value,
+    day: activeDay,
+    reminderMonth: month,
+    reminderYear: year,
   };
   options = {
     method: "POST",
