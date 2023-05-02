@@ -1,6 +1,7 @@
 :root {
   --primary-clr: #2c88cb;
   --hover-clr: #9dbdd4;
+  --secondary-clr: #f6a20a;
 }
 
 * {
@@ -23,6 +24,10 @@ header {
   padding: 14px 3%;
   box-shadow: 0 3px 5px rgba(19, 19, 19, 0.5);
   background-color: white;
+}
+
+button {
+  cursor: pointer;
 }
 
 body {
@@ -407,7 +412,7 @@ body {
 .reminderShow {
   display: flex;
   justify-content: space-between;
-  background-color: gray;
+  background-color: var(--secondary-clr);
   padding: 10px 15px;
   border-radius: 20px;
   margin-bottom: 10px;
@@ -436,4 +441,16 @@ body {
   margin-right: 10px;
   padding: 5px 10px;
   border-radius: 8px;
+}
+
+.reminderShow-button {
+  background-color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 5px 10px;
+  color: var(--secondary-clr);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
