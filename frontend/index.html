@@ -10,31 +10,33 @@
   <body>
     <header>
       <img class="logo" src="images/cv-logo.png" alt="logo" />
-      <button class="login-btn" onclick="window.location.href = `http://127.0.0.1:3000/courseville/auth_app`"> 
+      <button
+        class="login-btn"
+        onclick="window.location.href = `http://127.0.0.1:3000/courseville/auth_app`"
+      >
         Temporary Login
       </button>
-      <button class="logout-btn" onclick="window.location.href = `http://127.0.0.1:3000/courseville/logout`"> 
+      <button
+        class="logout-btn"
+        onclick="window.location.href = `http://127.0.0.1:3000/courseville/logout`"
+      >
         Temporary Logout
       </button>
-      <button class="getcourses-btn" onclick="getCourses()"> 
+      <button class="getcourses-btn" onclick="getCourses()">
         Test getCourses()
-      </button> 
+      </button>
     </header>
-    <!--
-    <div class="sidebar">
-      <button class="button text">Upload new task</button>
-    </div>
-    -->
+
     <div class="container">
       <div class="calendar">
         <div class="header">
           <div class="date"></div>
           <div class="month-picker">
-          <button class="prev-month-btn"><</button>
+            <button class="prev-month-btn"><</button>
             <button class="next-month-btn">></button>
           </div>
         </div>
-        <div class="weekdays"> 
+        <div class="weekdays">
           <div>Sun</div>
           <div>Mon</div>
           <div>Tue</div>
@@ -43,24 +45,22 @@
           <div>Fri</div>
           <div>Sat</div>
         </div>
-        <div class="days">
-        </div>
+        <div class="days"></div>
         <div class="footer">
           <button class="today-btn">TODAY</button>
           <div class="input">
-            <input type="text" placeholder="mm/yyyy" class="date-input">
+            <input type="text" placeholder="mm/yyyy" class="date-input" />
             <button class="goto-btn">GO</button>
           </div>
         </div>
       </div>
 
       <div class="task">
-        
         <!-- <div class="no-assignment">
           <h4>No Assignment</h4>
         </div> -->
-        
-        <div class="assignment">
+
+        <!-- <div class="assignment">
           <div class = "info">
             <div class="imageHolder">
               <img class="course-icon" src="https://mycourseville-default.s3.ap-southeast-1.amazonaws.com/useruploaded_course_files/2021_2/27352/course_icon/icon_cee_2022-1-16418931038922.png" alt="course-icon">
@@ -83,9 +83,9 @@
             </div>
           </div>
           <div class = "due-date">11:55</div>
-        </div>
+        </div> -->
+        <button class="add-task-btn">Upload new task</button>
       </div>
-     
     </div>
   </body>
 </html>
