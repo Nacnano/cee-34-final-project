@@ -388,7 +388,7 @@ body {
   align-items: center;
 }
 
-.confirm-btn {
+.add-btn {
   border: none;
   background-color: var(--primary-clr);
   color: white;

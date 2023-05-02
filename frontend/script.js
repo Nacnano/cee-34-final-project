@@ -7,11 +7,10 @@ const todayBtn = document.querySelector(".today-btn");
 const gotoBtn = document.querySelector(".goto-btn");
 const dateInput = document.querySelector(".date-input");
 const tasks = document.querySelector(".task");
-const addReminderBtn = document.querySelector(".add-reminder-btn");
 const deleteReminderBtn = document.querySelector(".delete-reminder-btn");
 const loginBtn = document.querySelector(".login-btn");
 const logoutBtn = document.querySelector(".logout-btn");
-const confirmBtn = document.querySelector(".confirm-btn");
+const addReminderBtn = document.querySelector(".add-btn");
 const reminderMessageInput = document.querySelector(".reminder-message");
 const reminderDateInput = document.querySelector("reminder-date");
 
@@ -395,13 +394,13 @@ async function getReminders() {
 //   })
 // }
 
-function confirmBtnHandler() {
-  addReminder();
-  getReminders();
+async function confirmBtnHandler() {
+  await addReminder();
+  await getReminders();
   updateEvents(activeDay);
 }
 
-confirmBtn.addEventListener("click", confirmBtnHandler);
+addReminderBtn.addEventListener("click", confirmBtnHandler);
 
 async function addReminder() {
   reminderMessage = document.querySelector(".reminder-message");
@@ -430,10 +429,6 @@ async function addReminder() {
 
   //Todo: Clear the input box to empty string
 }
-
-addReminderBtn.addEventListener("click", async () => {
-  await addReminder();
-});
 
 async function deleteReminder(reminder_id) {
   const options = {
