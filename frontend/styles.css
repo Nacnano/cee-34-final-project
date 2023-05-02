@@ -278,6 +278,7 @@ body {
   overflow: hidden;
   display: inline-block;
   justify-content: center;
+  overflow: auto;
 }
 
 .assignment {
