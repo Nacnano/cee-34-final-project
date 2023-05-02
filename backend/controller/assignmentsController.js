@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 dotenv.config()
 import { DynamoDBClient, BatchWriteItemCommand } from '@aws-sdk/client-dynamodb'
-import { PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb'
+import { DeleteCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb'
 import coursevilleUtils from '../utils/coursevilleUtils.js'
 import { v4 as uuid } from 'uuid'
 
@@ -29,13 +29,11 @@ export const getReminders = async (req, res) => {
 export const addReminder = async (req, res) => {
   console.log('Adding A Reminder')
   const profile = await coursevilleUtils.getProfileInformation(req)
-  const reminder_id = uuid()
-  const created_date = Date.now()
   const reminder = {
     id: uuid(),
     user_id: profile.user.id,
     ...req.body,
-    created_date: created_date
+    created_date: Date.now()
   }
 
   const params = {
@@ -58,7 +56,6 @@ export const deleteReminder = async (req, res) => {
   const params = {
     TableName: process.env.AWS_ASSIGNMENTS_TABLE_NAME,
     Key: {
-      user_id: profile.user.id,
       id: reminder_id
     }
   }

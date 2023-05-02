@@ -7,6 +7,8 @@ const todayBtn = document.querySelector('.today-btn')
 const gotoBtn = document.querySelector('.goto-btn')
 const dateInput = document.querySelector('.date-input')
 const tasks = document.querySelector('.task')
+const addReminderBtn = document.querySelector('.add-reminder-btn')
+const deleteReminderBtn = document.querySelector('.delete-reminder-btn')
 const loginBtn = document.querySelector('.login-btn')
 const logoutBtn = document.querySelector('.logout-btn')
 
@@ -36,6 +38,7 @@ const months = [
 ]
 
 let assignmentsList = []
+let remindersList = []
 
 async function renderPage () {
   createCalendar()
@@ -338,37 +341,40 @@ async function getReminders () {
   }
   const url = new URL(`${BackendURL}/assignments/`)
   try {
-    const res = await fetch(url, options)
-    const data = await res.json()
-    reminderData = data
+    const res = await fetch(url, options).then(
+      async res => (remindersList = await res.json())
+    )
+    console.log(remindersList)
   } catch (err) {
     console.log('ERROR')
     console.log(err)
     return null
   }
+  // Todo: then Show reminders
 }
 
-async function showReminder (reminderData) {
-  tasks.innerHTML = ''
-  reminderData.sort((a, b) => {
-    return a.created_date - b.created_date
-  })
-  reminderData.map(reminder => {
-    tasks.innerHTML += `<div class="reminder">
-    <div class="reminder-info">
-              <h4 class="reminder-title">${reminder.item}</h4>
-            </div>
-  </div>`
-  })
-}
+// Todo: Show new reminder after adding
+// (probably with new format based on data type)
+// async function showReminder (reminderData) {
+//   tasks.innerHTML = ''
+//   reminderData.sort((a, b) => {
+//     return a.created_date - b.created_date
+//   })
+//   reminderData.map(reminder => {
+//     tasks.innerHTML += `<div class="reminder">
+//     <div class="reminder-info">
+//               <h4 class="reminder-title">${reminder.item}</h4>
+//             </div>
+//   </div>`
+//   })
+// }
 
 async function addReminder () {
-  reminder_info = document.querySelector('.reminder')
-
+  reminderMessage = document.querySelector('.reminder-message')
+  reminderDate = document.querySelector('.reminder-date')
   reminderData = {
-    id: uuidv4(),
-    item: reminder_info,
-    date: new Date()
+    message: reminderInfo.value,
+    date: reminderDate.value
   }
   options = {
     method: 'POST',
@@ -384,7 +390,13 @@ async function addReminder () {
     .catch(err => {
       console.error(err)
     })
+
+  //Todo: Clear the input box to empty string
 }
+
+addReminderBtn.addEventListener('click', async () => {
+  await addReminder()
+})
 
 async function deleteReminder (reminder_id) {
   const options = {
@@ -398,6 +410,12 @@ async function deleteReminder (reminder_id) {
     })
 }
 
+//Todo: add reminderId from the one you want to delete
+deleteReminderBtn.addEventListener(
+  'click',
+  async () => await deleteReminder(reminderId)
+)
+
 loginBtn.addEventListener('click', () => {
   window.location.href = `${BackendURL}/courseville/auth_app`
 })
@@ -409,33 +427,3 @@ logoutBtn.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', async function () {
   await renderPage()
 })
-// async function getCourseInfo(cv_cid){
-//   const options = {
-//     method: "GET",
-//     credentials: "include",
-//   };
-//   const url = new URL(`${BackendURL}/courseville/get_course_info/`+cv_cid);
-//   try {
-//     const res = await fetch(url,options);
-//     const data = await res.json();
-//     return data;
-//   } catch (err) {
-//     console.log("ERROR");
-//     console.log(err);
-//     return null;
-//   }
-// }
-
-// async function getAssignments() {
-//   //TODO push all the assignment to assignmentsList. Each assignment should have
-//   //an information of assignment year month day, picture of course, course title,
-//   //assignment name, assignment due date(just hr:min)
-//   //It would be perfect if the assignment is a class or object in some sort with an attribute: day, month, year, courseImage, courseTitle, title, dueDate
-//     const options = {
-//       method: "GET",
-//       credentials: "include",
-//     };
-//     }
-
-// const getCoursesBtn = document.querySelector('.getcourses-btn')
-// getCoursesBtn.addEventListener('click', getCourses())
