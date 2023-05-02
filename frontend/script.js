@@ -332,6 +332,72 @@ document.addEventListener('DOMContentLoaded', async function () {
   await renderPage()
 })
 
+async function getReminders(){
+  const options = {
+    method: 'GET',
+    credentials: 'include'
+  }
+  const url = new URL(`${BackendURL}/assignments/`)
+  try {
+    const res = await fetch(url, options)
+    const data = await res.json()
+    reminderData = data
+  } catch (err) {
+    console.log('ERROR')
+    console.log(err)
+    return null
+  }
+}
+
+async function showReminder(reminderData){
+  tasks.innerHTML = ''
+  reminderData.sort((a,b) => {
+    return a.created_date-b.created_date;
+  })
+  reminderData.map((reminder) => {
+    tasks.innerHTML += `<div class="reminder">
+    <div class="reminder-info">
+              <h4 class="reminder-title">${reminder.item}</h4>
+            </div>
+  </div>`
+  })
+}
+
+async function addReminder() {
+  reminder_info = document.querySelector(".reminder")
+  
+  reminderData = {
+    id : uuidv4(),
+    item : reminder_info,
+    date : new Date()
+  }
+  options ={
+    method : "POST",
+    credentials : "include",
+    headers:{
+       "Content-type":"application/json"
+    },
+    body : JSON.stringify(reminderData)
+  }
+  
+  await fetch(`${BackendURL}/assignments/`,options)
+  .then(res => res.json)
+  .catch(err=>{
+    console.error(err)
+  })
+}
+
+async function deleteReminder(reminder_id){
+  const options = {
+    method: 'DELETE',
+    credentials: 'include'
+  }
+  await fetch(`${BackendURL}/assignments/${reminder_id}`,options)
+  .then(res => res)
+  .catch(err=>{
+    console.error(err)
+  })
+}
 // async function getCourseInfo(cv_cid){
 //   const options = {
 //     method: "GET",

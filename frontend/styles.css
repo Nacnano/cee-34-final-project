@@ -54,10 +54,10 @@ body {
 
 .sidebar {
   left: 0;
-  height: 100%;
+  
   width: 15%;
   background-color: #2c88cb;
-  border-top-right-radius: 80px;
+  border-radius: 20px;
   padding: 50px;
   justify-content: center;
   margin-top: 50px;

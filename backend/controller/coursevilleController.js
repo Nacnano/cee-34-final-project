@@ -160,3 +160,5 @@ export const logout = (req, res) => {
   res.redirect(`http://${process.env.frontendIPAddress}/index.html`)
   res.end()
 }
+
+// exports.getCourseAssignments

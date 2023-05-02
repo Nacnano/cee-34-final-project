@@ -16,8 +16,8 @@ export const getReminders = async (req, res) => {
     }
   }
   try {
-    const reminders = await docClient.send(new ScanCommand(params))
-    res.send(reminders.Items)
+    const data = await docClient.send(new ScanCommand(params))
+    res.send(data.Items)
   } catch (err) {
     console.error(err)
     res.status(500).send(err)
