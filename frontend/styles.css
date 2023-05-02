@@ -132,7 +132,7 @@ body {
   font-weight: bold;
 }
 
-.calendar .prex{
+.calendar .prex {
   margin-right: 20px;
 }
 
@@ -377,7 +377,6 @@ body {
   justify-content: center;
 }
 
-
 .add-reminder-body {
   margin-bottom: 20px;
 }
@@ -428,6 +427,12 @@ body {
 
 .reminderShow-button {
   margin-left: 10px;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.reminderShow-text {
+  margin-right: 10px;
   padding: 5px 10px;
   border-radius: 8px;
 }
