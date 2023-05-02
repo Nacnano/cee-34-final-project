@@ -39,8 +39,14 @@ body {
   height: auto;
 }
 
-.login-btn {
-  
+.login-btn, .logout-btn {
+  border: none;
+  background-color: var(--primary-clr);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 .container {
@@ -65,9 +71,6 @@ body {
   padding: 50px;
   justify-content: center;
   margin-top: 50px;
-}
-
-.sidebar .text {
 }
 
 .sidebar .image {
