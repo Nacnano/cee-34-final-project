@@ -97,7 +97,18 @@ function createCalendar() {
           isEvent = true;
         }
       });
-
+    
+    if (!isEvent && remindersList) {
+      remindersList.forEach((reminder) => {
+        if (
+          reminder.day === i &&
+          reminder.reminderMonth === month &&
+          reminder.reminderYear === year
+        ) {
+          isEvent = true;
+        }
+      });
+    }
     if (
       i === new Date().getDate() &&
       year === new Date().getFullYear() &&
