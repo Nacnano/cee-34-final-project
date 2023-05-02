@@ -7,6 +7,7 @@ dotenv.config({ path: './config.env' })
 
 import AppError from './utils/appError.js'
 import coursevilleRoutes from './routes/coursevilleRoutes.js'
+import assignmentsRoutes from './routes/assignmentRoutes.js'
 
 const app = express()
 
@@ -32,6 +33,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/courseville', coursevilleRoutes)
+app.use('/assignments', assignmentsRoutes)
 app.get('/', (req, res) => {
   res.send('Congratulation. This server is successfully run.')
 })
