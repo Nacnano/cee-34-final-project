@@ -77,7 +77,7 @@ export const getProfileInformation = async (req, res) => {
       }
     }
     const profileReq = https.request(
-      'https://www.mycourseville.com/api/v1/public/get/user/info',
+      'https://www.mycourseville.com/api/v1/public/users/me',
       profileOptions,
       profileRes => {
         let profileData = ''
