@@ -6,7 +6,7 @@ const router = Router()
 
 router.get('/auth_app', coursevilleController.authApp)
 router.get('/access_token', coursevilleController.accessToken)
-router.get('/me', coursevilleController.getProfileInformation)
+router.get('/me', auth, coursevilleController.getProfileInformation)
 router.get('/get_courses', auth, coursevilleController.getCourses)
 router.get(
   '/get_course_assignments/:cv_cid',

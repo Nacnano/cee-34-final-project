@@ -6,7 +6,7 @@ import querystring from 'querystring'
 import fetch from 'node-fetch'
 
 const redirect_uri = `http://${process.env.backendIPAddress}/courseville/access_token`
-const authorization_url = `https://www.mycourseville.com/api/oauth/authorize?response_type=code&client_id=${process.env.client_id}&redirect_uri=${redirect_uri}`
+export const authorization_url = `https://www.mycourseville.com/api/oauth/authorize?response_type=code&client_id=${process.env.client_id}&redirect_uri=${redirect_uri}`
 const access_token_url = 'https://www.mycourseville.com/api/oauth/access_token'
 
 export const authApp = (req, res) => {
@@ -48,7 +48,7 @@ export const accessToken = (req, res) => {
       tokenRes.on('end', () => {
         const token = JSON.parse(tokenData)
         req.session.token = token
-        console.log('Logging in', req.session.token)
+        console.log('A User logging in')
         if (token) {
           res.writeHead(302, {
             Location: `http://${process.env.frontendIPAddress}`
