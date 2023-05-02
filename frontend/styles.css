@@ -93,7 +93,7 @@ body {
 
 .calendar {
   height: 90%;
-  width: 27%;
+  width: 50%;
   background-color: white;
   border-radius: 25px;
   overflow: hidden;
@@ -245,16 +245,31 @@ body {
   background-color: var(--hover-clr);
 }
 
-.task {
+.calendar .input {
+  width: 35%;
+  height: 20%;
+}
+
+.assignment-block {
   height: 90%;
-  width: 25%;
+  width: 40%;
   background-color: white;
   border-radius: 25px;
+  padding: 20px;
+  margin-left: 5%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+}
+
+.task {
+  height: 100%;
+  width: 100%;
+  background-color: white;
   overflow: hidden;
   display: inline-block;
   justify-content: center;
-  padding: 20px;
-  margin-left: 5%;
 }
 
 .assignment {

@@ -10,18 +10,17 @@
   <body>
     <header>
       <img class="logo" src="images/cv-logo.png" alt="logo" />
-      <button class="login-btn">Temporary Login</button>
-      <button class="logout-btn">Temporary Logout</button>
-      <button class="getcourses-btn" onclick="getCourses()">
-        Test getCourses()
-      </button>
+      <div class="btn">
+        <button class="login-btn">Login</button>
+        <button class="logout-btn">Logout</button>
+      </div>
     </header>
 
-    <div class="sidebar">
+    <!-- <div class="sidebar">
       <button class="add-reminder-btn">Upload new reminder</button>
-      <!-- Todo: add delete button for a reminder with a unique reminder_id -->
+      Todo: add delete button for a reminder with a unique reminder_id
       <button class="delete-reminder-btn">Delete some reminder</button>
-    </div>
+    </div> -->
 
     <div class="container">
       <div class="calendar">
@@ -50,37 +49,56 @@
           </div>
         </div>
       </div>
+      
+      <div class="assignment-block">
+        <div class="task">
+          <div class="no-assignment">
+            <h4>Loading Assignments</h4>
+          </div>
 
-      <div class="task">
-        <div class="no-assignment">
-          <h4>Loading Assignments</h4>
-        </div>
-
-        <!-- <div class="assignment">
-          <div class = "info">
-            <div class="imageHolder">
-              <img class="course-icon" src="https://mycourseville-default.s3.ap-southeast-1.amazonaws.com/useruploaded_course_files/2021_2/27352/course_icon/icon_cee_2022-1-16418931038922.png" alt="course-icon">
+          <!-- <div class="assignment">
+            <div c  lass = "info">
+              <div class="imageHolder">
+                <img class="course-icon" src="https://mycourseville-default.s3.ap-southeast-1.amazonaws.com/useruploaded_course_files/2021_2/27352/course_icon/icon_cee_2022-1-16418931038922.png" alt="course-icon">
+              </div>
+              <div class="assignment-info">
+                <h5 class="course-title">Computer Engineering Essentials [Section 33-35]</h3>
+                <h4 class="assignment-title">Activity 12: 5 minutes question</h4>
+              </div>
             </div>
-            <div class="assignment-info">
-              <h5 class="course-title">Computer Engineering Essentials [Section 33-35]</h3>
-              <h4 class="assignment-title">Activity 12: 5 minutes question</h4>
+            <div class = "due-date">11:55</div>
+          </div>
+          <div class="assignment">
+            <div class = "info">
+              <div class="imageHolder">
+                <img class="course-icon" src="https://mycourseville-default.s3.ap-southeast-1.amazonaws.com/useruploaded_course_files/2021_2/27352/course_icon/icon_cee_2022-1-16418931038922.png" alt="course-icon">
+              </div>
+              <div class="assignment-info">
+                <h5 class="course-title">Computer Engineering Essentials [Section 33-35]</h3>
+                <h4 class="assignment-title">Activity 12: 5 minutes question</h4>
+              </div>
+            </div>
+            <div class = "due-date">11:55</div> 
+          </div> -->
+        </div>
+        <div class="add-reminder-wrapper">
+          <div class="add-reminder-header">
+            <div class="add-reminder-title">Add Reminder</div>
+            <button class="close-btn">x</button>
+          </div>
+          <div class="add-reminder-body">
+            <div class="add-reminder-input">
+              <input type="text" placeholder="Event Title" class="reminder-message">
+              <input type="text" placeholder="Time" class="reminder-date">
             </div>
           </div>
-          <div class = "due-date">11:55</div>
         </div>
-        <div class="assignment">
-          <div class = "info">
-            <div class="imageHolder">
-              <img class="course-icon" src="https://mycourseville-default.s3.ap-southeast-1.amazonaws.com/useruploaded_course_files/2021_2/27352/course_icon/icon_cee_2022-1-16418931038922.png" alt="course-icon">
-            </div>
-            <div class="assignment-info">
-              <h5 class="course-title">Computer Engineering Essentials [Section 33-35]</h3>
-              <h4 class="assignment-title">Activity 12: 5 minutes question</h4>
-            </div>
-          </div>
-          <div class = "due-date">11:55</div>
-        </div> -->
+        <div class="assignment-btn">
+          <button class="add-reminder-btn">Add</button>
+          <button class="delete-reminder-btn">Delete</button>
+        </div>
       </div>
     </div>
+  </div>
   </body>
 </html>
