@@ -229,13 +229,13 @@ async function updateEvents (date) {
     <div class = "due-date">${assignment.dueDate}</div>
   </div>`
     }
-
-    if (assignments === '') {
-      assignments = `<div class="no-assignment">
-            <h4>No Assignment</h4>
-        </div>`
-    }
   })
+
+  if (assignments === '') {
+    assignments = `<div class="no-assignment">
+          <h4>No Assignment</h4>
+      </div>`
+  }
   tasks.innerHTML = assignments
 }
 
