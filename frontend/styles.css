@@ -132,7 +132,7 @@ body {
   font-weight: bold;
 }
 
-.calendar .prev-month-btn {
+.calendar .prex{
   margin-right: 20px;
 }
 
@@ -349,6 +349,53 @@ body {
   border: 3px solid #ccc;
   border-top-color: #333;
   animation: spin 1s infinite linear;
+}
+
+.add-reminder-wrapper {
+  border-color: var(--primary-clr);
+  border-radius: 20px;
+  border: solid var(--primary-clr);
+  margin: 30px;
+  padding: 20px;
+}
+
+.add-reminder-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.close-btn {
+  background-color: var(--primary-clr);
+  border: none;
+  border-radius: 50%;
+  padding: 5px 10px;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.add-reminder-body {
+  margin-bottom: 20px;
+}
+
+.add-reminder-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-btn {
+  border: none;
+  background-color: var(--primary-clr);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 @keyframes spin {
