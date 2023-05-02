@@ -7,9 +7,12 @@ const todayBtn = document.querySelector('.today-btn')
 const gotoBtn = document.querySelector('.goto-btn')
 const dateInput = document.querySelector('.date-input')
 const tasks = document.querySelector('.task')
+const loginBtn = document.querySelector('.login-btn')
+const logoutBtn = document.querySelector('.logout-btn')
 
 //Local -> will change to IPV4 public
-const BackendURL = 'http://52.0.226.204:3000'
+const BackendURL = 'http://127.0.0.1:3000'
+// const BackendURL = 'http://52.0.226.204:3000'
 
 let currDay = new Date()
 let activeDay
@@ -328,11 +331,7 @@ async function getCoursesAssignments (cv_cid) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', async function () {
-  await renderPage()
-})
-
-async function getReminders(){
+async function getReminders () {
   const options = {
     method: 'GET',
     credentials: 'include'
@@ -349,12 +348,12 @@ async function getReminders(){
   }
 }
 
-async function showReminder(reminderData){
+async function showReminder (reminderData) {
   tasks.innerHTML = ''
-  reminderData.sort((a,b) => {
-    return a.created_date-b.created_date;
+  reminderData.sort((a, b) => {
+    return a.created_date - b.created_date
   })
-  reminderData.map((reminder) => {
+  reminderData.map(reminder => {
     tasks.innerHTML += `<div class="reminder">
     <div class="reminder-info">
               <h4 class="reminder-title">${reminder.item}</h4>
@@ -363,41 +362,53 @@ async function showReminder(reminderData){
   })
 }
 
-async function addReminder() {
-  reminder_info = document.querySelector(".reminder")
-  
+async function addReminder () {
+  reminder_info = document.querySelector('.reminder')
+
   reminderData = {
-    id : uuidv4(),
-    item : reminder_info,
-    date : new Date()
+    id: uuidv4(),
+    item: reminder_info,
+    date: new Date()
   }
-  options ={
-    method : "POST",
-    credentials : "include",
-    headers:{
-       "Content-type":"application/json"
+  options = {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-type': 'application/json'
     },
-    body : JSON.stringify(reminderData)
+    body: JSON.stringify(reminderData)
   }
-  
-  await fetch(`${BackendURL}/assignments/`,options)
-  .then(res => res.json)
-  .catch(err=>{
-    console.error(err)
-  })
+
+  await fetch(`${BackendURL}/assignments/`, options)
+    .then(res => res.json)
+    .catch(err => {
+      console.error(err)
+    })
 }
 
-async function deleteReminder(reminder_id){
+async function deleteReminder (reminder_id) {
   const options = {
     method: 'DELETE',
     credentials: 'include'
   }
-  await fetch(`${BackendURL}/assignments/${reminder_id}`,options)
-  .then(res => res)
-  .catch(err=>{
-    console.error(err)
-  })
+  await fetch(`${BackendURL}/assignments/${reminder_id}`, options)
+    .then(res => res)
+    .catch(err => {
+      console.error(err)
+    })
 }
+
+loginBtn.addEventListener('click', () => {
+  window.location.href = `${BackendURL}/courseville/auth_app`
+})
+
+logoutBtn.addEventListener('click', () => {
+  window.location.href = `${BackendURL}/courseville/logout`
+})
+
+document.addEventListener('DOMContentLoaded', async function () {
+  await renderPage()
+})
 // async function getCourseInfo(cv_cid){
 //   const options = {
 //     method: "GET",
