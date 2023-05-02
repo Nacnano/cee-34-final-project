@@ -8,6 +8,7 @@ import { v4 as uuid } from 'uuid'
 const docClient = new DynamoDBClient({ regions: process.env.AWS_REGION })
 
 export const getReminders = async (req, res) => {
+  console.log('Fetching Reminders')
   const profile = await coursevilleUtils.getProfileInformation(req)
   const params = {
     TableName: process.env.AWS_ASSIGNMENTS_TABLE_NAME,
@@ -26,6 +27,7 @@ export const getReminders = async (req, res) => {
 }
 
 export const addReminder = async (req, res) => {
+  console.log('Adding A Reminder')
   const profile = await coursevilleUtils.getProfileInformation(req)
   const reminder_id = uuid()
   const created_date = Date.now()
@@ -50,6 +52,7 @@ export const addReminder = async (req, res) => {
 }
 
 export const deleteReminder = async (req, res) => {
+  console.log('Deleting A Reminder')
   const profile = await coursevilleUtils.getProfileInformation(req)
   const reminder_id = req.params.reminder_id
   const params = {
