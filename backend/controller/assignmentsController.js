@@ -3,6 +3,7 @@ dotenv.config()
 import { DynamoDBClient, BatchWriteItemCommand } from '@aws-sdk/client-dynamodb'
 import { PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb'
 import coursevilleUtils from '../utils/coursevilleUtils.js'
+import { v4 as uuid } from 'uuid'
 
 const docClient = new DynamoDBClient({ regions: process.env.AWS_REGION })
 
@@ -26,7 +27,7 @@ export const getReminders = async (req, res) => {
 
 export const addReminder = async (req, res) => {
   const profile = await coursevilleUtils.getProfileInformation(req)
-  const reminder_id = uuidv4()
+  const reminder_id = uuid()
   const created_date = Date.now()
   const reminder = {
     user_id: profile.user.id,
