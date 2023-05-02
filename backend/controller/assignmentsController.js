@@ -36,7 +36,7 @@ export const addReminder = async (req, res) => {
   }
 
   const params = {
-    TableName: process.env.AWS_ASSIGNMENT_TABLE_NAME,
+    TableName: process.env.AWS_ASSIGNMENTS_TABLE_NAME,
     Item: reminder
   }
   try {
@@ -52,7 +52,7 @@ export const deleteReminder = async (req, res) => {
   const profile = await coursevilleUtils.getProfileInformation(req)
   const reminder_id = req.params.reminder_id
   const params = {
-    TableName: process.env.AWS_ASSIGNMENT_TABLE_NAME,
+    TableName: process.env.AWS_ASSIGNMENTS_TABLE_NAME,
     Key: {
       user_id: profile.user.id,
       reminder_id: reminder_id
