@@ -9,7 +9,7 @@ const docClient = new DynamoDBClient({ regions: process.env.AWS_REGION })
 export const getReminders = async (req, res) => {
   const profile = await coursevilleUtils.getProfileInformation(req)
   const params = {
-    TableName: process.env.AWS_ASSIGNMENT_TABLE_NAME,
+    TableName: process.env.AWS_ASSIGNMENTS_TABLE_NAME,
     FilterExpression: 'user_id = :id',
     ExpressionAttributeValues: {
       ':id': profile.user.id
