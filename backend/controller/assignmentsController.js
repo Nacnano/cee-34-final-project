@@ -30,8 +30,8 @@ export const addReminder = async (req, res) => {
   const reminder_id = uuid()
   const created_date = Date.now()
   const reminder = {
+    id: uuid(),
     user_id: profile.user.id,
-    reminder_id: reminder_id,
     ...req.body,
     created_date: created_date
   }
@@ -56,7 +56,7 @@ export const deleteReminder = async (req, res) => {
     TableName: process.env.AWS_ASSIGNMENTS_TABLE_NAME,
     Key: {
       user_id: profile.user.id,
-      reminder_id: reminder_id
+      id: reminder_id
     }
   }
   try {
