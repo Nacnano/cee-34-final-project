@@ -8,9 +8,11 @@ const gotoBtn = document.querySelector('.goto-btn')
 const dateInput = document.querySelector('.date-input')
 const tasks = document.querySelector('.task')
 const addReminderBtn = document.querySelector('.add-reminder-btn')
-const deleteReminderBtn = document.querySelector('.delete-reminder-btn')
 const loginBtn = document.querySelector('.login-btn')
 const logoutBtn = document.querySelector('.logout-btn')
+const confirmBtn = document.querySelector('.confirm')
+const reminderMessageInput = document.querySelector('.reminder-message')
+const reminderDateInput = document.querySelector('reminder-date')
 
 //Local -> will change to IPV4 public
 const BackendURL = 'http://127.0.0.1:3000'
@@ -373,11 +375,9 @@ async function getReminders () {
 // }
 
 async function addReminder () {
-  reminderMessage = document.querySelector('.reminder-message')
-  reminderDate = document.querySelector('.reminder-date')
   reminderData = {
-    message: reminderInfo.value,
-    date: reminderDate.value
+    message: reminderMessageInput.value,
+    date: reminderDateInput.value
   }
   options = {
     method: 'POST',
@@ -414,10 +414,10 @@ async function deleteReminder (reminder_id) {
 }
 
 //Todo: add reminderId from the one you want to delete
-deleteReminderBtn.addEventListener(
-  'click',
-  async () => await deleteReminder(reminderId)
-)
+// deleteReminderBtn.addEventListener(
+//   'click',
+//   async () => await deleteReminder(reminderId)
+// )
 
 loginBtn.addEventListener('click', () => {
   window.location.href = `${BackendURL}/courseville/auth_app`
