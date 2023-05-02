@@ -9,7 +9,7 @@ const dateInput = document.querySelector('.date-input')
 const tasks = document.querySelector('.task')
 
 //Local -> will change to IPV4 public
-const BackendURL = 'http://127.0.0.1:3000'
+const BackendURL = 'http://52.0.226.204:3000'
 
 let currDay = new Date()
 let activeDay
