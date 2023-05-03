@@ -67,15 +67,11 @@ function RemoveLoading () {
 }
 
 function convertUnixToTime (unixTimestamp) {
-  const dateObj = new Date(
-    unixTimestamp +
-      7 * 60 * 60 * 1000 -
-      new Date().getTimezoneOffset() * 60 * 1000
-  )
+  const dateObj = new Date(unixTimestamp * 1000)
   const hours = dateObj.getUTCHours()
   const minutes = dateObj.getUTCMinutes()
   const timeString =
-    hours.toString().padStart(2, '0') +
+    (hours + 7).toString().padStart(2, '0') +
     ':' +
     minutes.toString().padStart(2, '0')
   return timeString
