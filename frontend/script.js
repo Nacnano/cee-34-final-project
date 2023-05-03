@@ -107,6 +107,7 @@ function createCalendar () {
           isEvent = true
         }
       })
+    /*
     if (remindersList) {
       remindersList.forEach(reminder => {
         if (
@@ -118,7 +119,7 @@ function createCalendar () {
         }
       })
     }
-
+    */
     if (
       i === new Date().getDate() &&
       year === new Date().getFullYear() &&
