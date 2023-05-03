@@ -371,7 +371,6 @@ body {
   margin-bottom: 20px;
 }
 
-
 .add-reminder-body {
   margin-bottom: 20px;
 }
@@ -444,3 +443,13 @@ body {
   justify-content: center;
 }
 
+.reminder-message {
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border-color: #2c88cb;
+}
+
+.reminder-date {
+  border-radius: 5px;
+  border-color: #2c88cb;
+}
