@@ -14,8 +14,8 @@ const reminderMessageInput = document.querySelector('.reminder-message')
 const reminderDateInput = document.querySelector('reminder-date')
 
 //Local -> will change to IPV4 public
-// const BackendURL = 'http://127.0.0.1:3000'
-const BackendURL = 'http://52.0.226.204:3000'
+const BackendURL = 'http://127.0.0.1:3000'
+// const BackendURL = 'http://52.0.226.204:3000'
 
 let currDay = new Date()
 let activeDay
@@ -67,7 +67,11 @@ function RemoveLoading () {
 }
 
 function convertUnixToTime (unixTimestamp) {
-  const dateObj = new Date(unixTimestamp * 1000)
+  const dateObj = new Date(
+    unixTimestamp +
+      7 * 60 * 60 * 1000 -
+      new Date().getTimezoneOffset() * 60 * 1000
+  )
   const hours = dateObj.getUTCHours()
   const minutes = dateObj.getUTCMinutes()
   const timeString =
