@@ -14,7 +14,7 @@ const reminderMessageInput = document.querySelector('.reminder-message')
 const reminderDateInput = document.querySelector('reminder-date')
 
 //Local -> will change to IPV4 public
-//const BackendURL = 'http://127.0.0.1:3000'
+// const BackendURL = 'http://127.0.0.1:3000'
 const BackendURL = 'http://52.0.226.204:3000'
 
 let currDay = new Date()
@@ -107,19 +107,19 @@ function createCalendar () {
           isEvent = true
         }
       })
-    /*
+    
     if (remindersList) {
       remindersList.forEach(reminder => {
         if (  
           reminder.day === i &&
-          reminder.reminderMonth === month &&
+          reminder.reminderMonth === month +1&&
           reminder.reminderYear === year
         ) {
           isEvent = true
         }
       })
     }
-    */
+    
     if (
       i === new Date().getDate() &&
       year === new Date().getFullYear() &&
