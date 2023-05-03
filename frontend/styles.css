@@ -445,11 +445,13 @@ body {
 
 .reminder-message {
   margin-bottom: 5px;
+  border: solid var(--primary-clr);
   border-radius: 5px;
-  border-color: #2c88cb;
+  padding: 5px;
 }
 
 .reminder-date {
+  border: solid var(--primary-clr);
   border-radius: 5px;
-  border-color: #2c88cb;
+  padding: 5px;
 }
