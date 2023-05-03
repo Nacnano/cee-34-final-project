@@ -459,8 +459,8 @@ async function addReminder () {
 
   await fetch(`${BackendURL}/assignments/`, options)
     .then(res => {res.json
-   document.getElementById('.reminder-message-id').value=''
-   document.getElementById('.reminder-date-id').value=''
+      reminderMessage.value = '';
+      reminderDate.value = ''
   })
     .catch(err => {
       console.error(err)
@@ -479,6 +479,8 @@ async function deleteReminder (reminder_id) {
     .catch(err => {
       console.error(err)
     })
+  await getReminders()
+  updateEvents(activeDay)
 }
 
 loginBtn.addEventListener('click', () => {
