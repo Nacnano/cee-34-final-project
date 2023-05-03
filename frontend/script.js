@@ -107,19 +107,18 @@ function createCalendar () {
           isEvent = true
         }
       })
-    
+
     if (remindersList) {
       remindersList.forEach(reminder => {
-        if (  
+        if (
           reminder.day === i &&
-          reminder.reminderMonth === month +1&&
+          reminder.reminderMonth === month &&
           reminder.reminderYear === year
         ) {
           isEvent = true
         }
       })
     }
-    
     if (
       i === new Date().getDate() &&
       year === new Date().getFullYear() &&
@@ -248,7 +247,7 @@ function gotoDate () {
   if (dateArr.length === 2) {
     if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
       month = dateArr[0] - 1
-      year = dateArr[1]
+      year = Number(dateArr[1])
       dateInput.value = ''
       createCalendar()
       return
@@ -446,7 +445,7 @@ async function addReminder () {
     message: reminderMessage.value,
     date: reminderDate.value,
     day: activeDay,
-    reminderMonth: month +1,
+    reminderMonth: month + 1,
     reminderYear: year
   }
   options = {
@@ -459,10 +458,11 @@ async function addReminder () {
   }
 
   await fetch(`${BackendURL}/assignments/`, options)
-    .then(res => {res.json
-      reminderMessage.value = '';
+    .then(res => {
+      res.json
+      reminderMessage.value = ''
       reminderDate.value = ''
-  })
+    })
     .catch(err => {
       console.error(err)
     })
