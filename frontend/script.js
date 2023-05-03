@@ -7,7 +7,6 @@ const todayBtn = document.querySelector('.today-btn')
 const gotoBtn = document.querySelector('.goto-btn')
 const dateInput = document.querySelector('.date-input')
 const tasks = document.querySelector('.task')
-const deleteReminderBtn = document.querySelector('.delete-reminder-btn')
 const loginBtn = document.querySelector('.login-btn')
 const logoutBtn = document.querySelector('.logout-btn')
 const addReminderBtn = document.querySelector('.add-btn')
@@ -108,8 +107,7 @@ function createCalendar () {
           isEvent = true
         }
       })
-
-    if (!isEvent && remindersList) {
+    if (remindersList) {
       remindersList.forEach(reminder => {
         if (
           reminder.day === i &&
@@ -120,6 +118,7 @@ function createCalendar () {
         }
       })
     }
+
     if (
       i === new Date().getDate() &&
       year === new Date().getFullYear() &&
@@ -256,7 +255,6 @@ function gotoDate () {
   }
   alert('Invalid Date')
 }
-//TODO: Make this function work
 function updateEvents (date) {
   let assignments = ''
 
@@ -283,32 +281,63 @@ function updateEvents (date) {
   </div>`
       }
     })
+  tasks.innerHTML = assignments
 
   if (remindersList)
     remindersList.forEach(reminder => {
       if (
         date === reminder.day &&
-        month === reminder.reminderMonth &&
+        month + 1 === reminder.reminderMonth &&
         year === reminder.reminderYear
       ) {
-        assignments += `                  <div class = "reminderShow">
-        <div class = "reminderShow1">
-          <img src="./images/reminder-icon.png" alt="">
-          <div class = "reminderShow-text"> ${reminder.message}</div>
-        </div>
-        <div class = "reminderShow2">
-          <div class = "reminderShow-time">${reminder.date}</div>
-          <button class = "reminderShow-button" onclick= "">X</button>
-        </div>
-      </div>`
+        const reminderShow = document.createElement('div')
+        reminderShow.classList.add('reminderShow')
+
+        const reminderShow1 = document.createElement('div')
+        reminderShow1.classList.add('reminderShow1')
+
+        const reminderIcon = document.createElement('img')
+        reminderIcon.src = './images/reminder-icon.png'
+        reminderIcon.alt = ''
+
+        const reminderShowText = document.createElement('div')
+        reminderShowText.classList.add('reminderShow-text')
+        reminderShowText.innerText = reminder.message
+
+        reminderShow1.appendChild(reminderIcon)
+        reminderShow1.appendChild(reminderShowText)
+        reminderShow.appendChild(reminderShow1)
+
+        const reminderShow2 = document.createElement('div')
+        reminderShow2.classList.add('reminderShow2')
+
+        const reminderShowTime = document.createElement('div')
+        reminderShowTime.classList.add('reminderShow-time')
+        reminderShowTime.innerText = reminder.date
+
+        reminderShow2.appendChild(reminderShowTime)
+        reminderShow.appendChild(reminderShow2)
+
+        const reminderDeleteButton = document.createElement('button')
+        reminderDeleteButton.classList.add('reminderShow-button')
+        reminderDeleteButton.innerHTML = 'X'
+        reminderDeleteButton.addEventListener('click', async () => {
+          await deleteReminder(reminder.id)
+        })
+
+        reminderShow2.appendChild(reminderDeleteButton)
+
+        tasks.appendChild(reminderShow)
       }
     })
-  if (assignments === '') {
-    assignments = `<div class="no-assignment">
-          <h4>No Assignment</h4>
-      </div>`
+  if (!tasks.childElementCount) {
+    const noAssignment = document.createElement('div')
+    const h4Text = document.createElement('h4')
+
+    noAssignment.appendChild(h4Text)
+
+    tasks.appendChild(noAssignment)
   }
-  tasks.innerHTML = assignments
 }
 
 const getUserProfile = async () => {
@@ -390,33 +419,16 @@ async function getReminders () {
   }
   const url = new URL(`${BackendURL}/assignments/`)
   try {
-    const res = await fetch(url, options).then(
-      async res => (remindersList = await res.json())
-    )
+    const res = await fetch(url, options)
+    remindersList = await res.json()
     console.log(remindersList)
+    return remindersList
   } catch (err) {
     console.log('ERROR')
     console.log(err)
     return null
   }
-  // Todo: then Show reminders
 }
-
-// Todo: Show new reminder after adding
-// (probably with new format based on data type)
-// async function showReminder (reminderData) {
-//   tasks.innerHTML = ''
-//   reminderData.sort((a, b) => {
-//     return a.created_date - b.created_date
-//   })
-//   reminderData.map(reminder => {
-//     tasks.innerHTML += `<div class="reminder">
-//     <div class="reminder-info">
-//               <h4 class="reminder-title">${reminder.item}</h4>
-//             </div>
-//   </div>`
-//   })
-// }
 
 async function confirmBtnHandler () {
   await addReminder()
@@ -433,7 +445,7 @@ async function addReminder () {
     message: reminderMessage.value,
     date: reminderDate.value,
     day: activeDay,
-    reminderMonth: month,
+    reminderMonth: month +1,
     reminderYear: year
   }
   options = {
@@ -446,7 +458,10 @@ async function addReminder () {
   }
 
   await fetch(`${BackendURL}/assignments/`, options)
-    .then(res => res.json)
+    .then(res => {res.json
+   document.getElementById('.reminder-message-id').value=''
+   document.getElementById('.reminder-date-id').value=''
+  })
     .catch(err => {
       console.error(err)
     })
@@ -465,12 +480,6 @@ async function deleteReminder (reminder_id) {
       console.error(err)
     })
 }
-
-//Todo: add reminderId from the one you want to delete
-// deleteReminderBtn.addEventListener(
-//   'click',
-//   async () => await deleteReminder(reminderId)
-// )
 
 loginBtn.addEventListener('click', () => {
   window.location.href = `${BackendURL}/courseville/auth_app`
