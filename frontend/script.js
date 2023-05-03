@@ -111,7 +111,7 @@ function createCalendar () {
       remindersList.forEach(reminder => {
         if (
           reminder.day === i &&
-          reminder.reminderMonth === month + 1 &&
+          reminder.reminderMonth === month &&
           reminder.reminderYear === year
         ) {
           isEvent = true
@@ -419,10 +419,10 @@ async function getReminders () {
   }
   const url = new URL(`${BackendURL}/assignments/`)
   try {
-    const res = await fetch(url, options).then(
-      async res => (remindersList = await res.json())
-    )
+    const res = await fetch(url, options)
+    remindersList = await res.json()
     console.log(remindersList)
+    return remindersList
   } catch (err) {
     console.log('ERROR')
     console.log(err)
@@ -445,7 +445,7 @@ async function addReminder () {
     message: reminderMessage.value,
     date: reminderDate.value,
     day: activeDay,
-    reminderMonth: month,
+    reminderMonth: month +1,
     reminderYear: year
   }
   options = {
@@ -458,7 +458,10 @@ async function addReminder () {
   }
 
   await fetch(`${BackendURL}/assignments/`, options)
-    .then(res => res.json)
+    .then(res => {res.json
+   document.getElementById('.reminder-message-id').value=''
+   document.getElementById('.reminder-date-id').value=''
+  })
     .catch(err => {
       console.error(err)
     })
